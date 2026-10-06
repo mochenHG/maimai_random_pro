@@ -1,0 +1,17 @@
+/* Refraction is bounded to the 82px header. No continuously rendered scene. */
+.glass-filter-defs{position:absolute;pointer-events:none}
+.topbar{isolation:isolate;background:color-mix(in srgb,var(--glass-solid) 22%,transparent);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:inset 0 1px 0 var(--glass-edge),inset 0 -1px 0 var(--glass-shade),0 12px 36px #00000012}
+.header-refraction{position:absolute;inset:0;z-index:-1;border-radius:inherit;background:color-mix(in srgb,var(--glass-solid) 52%,transparent);backdrop-filter:blur(8px) saturate(1.18);-webkit-backdrop-filter:blur(8px) saturate(1.18);pointer-events:none}
+@supports(backdrop-filter:url(#test)){.header-refraction.is-ready{backdrop-filter:var(--header-filter) blur(2px) saturate(1.15);-webkit-backdrop-filter:var(--header-filter) blur(2px) saturate(1.15)}}
+.header-prism{position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;background:linear-gradient(135deg,#ffffff38,transparent 28%,transparent 76%,#ffffff12);box-shadow:inset 1px 1px 0 #ffffff70,inset -1px -1px 0 #00000020;overflow:hidden}
+.header-prism:before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;transition:opacity .3s;background:radial-gradient(130px 64px at var(--glass-x,76%) var(--glass-y,40%),#ffffff30,transparent 80%);box-shadow:inset 0 1px 0 #ffffffb0}
+.header-prism:after{content:"";position:absolute;left:var(--glass-x,76%);bottom:-2px;translate:-50% 0;width:160px;height:7px;border-radius:100%;background:linear-gradient(90deg,transparent,#58aaff,#ffffff,#ffcc79,transparent);filter:blur(.7px);opacity:0;transition:opacity .25s}
+.header-prism:before{opacity:.7}.header-prism:after{opacity:.75}
+.animated-title:after{display:none}
+.page-heading{perspective:900px}
+.page-heading .animated-title{transform:perspective(900px) rotateX(var(--title-rx,0deg)) rotateY(var(--title-ry,0deg)) translate3d(var(--title-x,0px),var(--title-y,0px),0);transform-style:preserve-3d;transition:transform .18s ease-out}
+.page-heading .animated-title .title-light{translate:0 0 14px}.page-heading .animated-title .heading-dot{translate:0 0 24px}
+@media(max-width:760px),(pointer:coarse){.header-refraction.is-ready{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}.page-heading .animated-title{transform:none!important}}
+@media(prefers-reduced-motion:reduce){.page-heading .animated-title{transform:none!important}.header-prism:before,.header-prism:after{display:none}}
+@media(prefers-reduced-transparency:reduce){.topbar,.header-refraction{background:var(--glass-solid);backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.header-prism{display:none}}
+@supports not(backdrop-filter:blur(1px)){.topbar{background:var(--glass-solid)}}

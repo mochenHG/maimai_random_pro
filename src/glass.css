@@ -1,0 +1,95 @@
+/* v1.4: original CSS inspired by PDAim's monochrome, floating glass surfaces.
+   Base surface styling; v1.8 adds the shared liquid glass treatment. */
+:root{--bg:#fafafa;--surface:#fff;--surface-alt:#f6f6f6;--ink:#090909;--muted:#68686b;--line:#16161620;--line-soft:#16161612;--soft:#09090908;--glass:#ffffffb8;--glass-solid:#fafafa;--glass-control:#ffffff86;--glass-edge:#ffffffed;--glass-shade:#00000013;--glass-highlight:#ffffff;--shadow:inset 0 1px 0 var(--glass-edge),inset 0 -1px 0 var(--glass-shade),0 14px 42px #00000007}
+:root[data-theme=dark]{--bg:#070708;--surface:#18181b;--surface-alt:#121214;--ink:#fafafa;--muted:#b0b0b4;--line:#ffffff24;--line-soft:#ffffff16;--soft:#ffffff0c;--glass:#19191dad;--glass-solid:#18181b;--glass-control:#ffffff09;--glass-edge:#ffffff38;--glass-shade:#00000066;--glass-highlight:#ffffff12;--shadow:inset 0 1px 0 var(--glass-edge),inset 0 -1px 0 var(--glass-shade),0 18px 48px #00000022}
+.app-frame{max-width:1440px;padding:18px 5% 0}
+.topbar{position:sticky;top:18px;z-index:80;height:82px;min-height:82px;padding:0 26px;gap:18px;border:1px solid var(--line);border-radius:50px;background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 var(--glass-edge),inset 0 -1px 0 var(--glass-shade),0 10px 32px #0000000a}
+.brand:has(.brand-logo),.brand-logo{width:192px}.brand-logo{height:64px}
+.main-nav{padding:6px;background:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;border:0}
+.main-nav:before{background:var(--glass-control);border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--glass-edge),0 4px 14px #0000000a}
+.main-nav button{min-width:112px;padding:12px 16px;font-size:16px;font-weight:550;color:var(--muted)}
+.main-nav button.selected{color:var(--ink)}
+.main-nav button:hover{background:transparent;color:var(--ink)}
+.header-tools{gap:12px}.theme-toggle{background:var(--glass-control);border-color:var(--line);box-shadow:inset 0 1px 0 var(--glass-edge);width:44px;height:44px}
+.workspace{padding:54px 0 80px}.page-heading{position:relative;justify-content:center;text-align:center;min-height:230px;margin:0 0 46px}
+.page-heading>div:first-child{margin:0 auto}.page-heading h1,.page-heading .animated-title{font-size:clamp(58px,8.8vw,112px);font-weight:850;letter-spacing:-.075em;line-height:1.08}
+.animated-title .title-light{font-weight:400;font-style:italic;font-synthesis:style;letter-spacing:-.06em}
+::view-transition{pointer-events:none}
+.animated-title{position:relative}
+.page-heading .obs-access{position:absolute;right:0;bottom:0;text-align:left}.page-heading .obs-access>summary{font-size:15px;padding:11px 20px;background:var(--glass-control);box-shadow:inset 0 1px 0 var(--glass-edge);border-color:var(--line)}
+.draw-heading{min-height:260px}.draw-heading .hero-motion{display:none}
+.heading-dot{color:#b6a000}
+.panel,.stage-config{background-color:var(--glass);background-image:linear-gradient(135deg,var(--glass-highlight),transparent 42%);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)}
+.app-frame button:not(.primary):not(.difficulty-chip):not(.stage-step):not(.text-button):not(.disclosure-trigger):not(.theme-toggle):not(.main-nav button),.app-frame .button{background-color:var(--glass-control);border-color:var(--line);box-shadow:inset 0 1px 0 var(--glass-edge)}
+.app-frame button.primary,.stage-dialog button.primary{background:var(--ink);border-color:var(--ink);color:var(--bg);box-shadow:0 6px 20px #00000010}
+.app-frame button.primary:hover,.stage-dialog button.primary:hover{background:color-mix(in srgb,var(--ink) 86%,var(--bg));box-shadow:0 9px 25px #00000018}
+.app-frame button.primary:disabled{opacity:.4}
+.app-frame .segmented .selected,.stage-dialog .segmented .selected{background-color:var(--ink)!important;color:var(--bg);box-shadow:none!important}
+.app-frame input:not([type=range]):not([type=checkbox]),.app-frame .select-trigger,.stage-dialog input,.stage-dialog .select-trigger{background:var(--glass-control);border:1px solid var(--line);box-shadow:inset 0 1px 3px #00000004;border-radius:15px}
+.app-frame label,.app-frame legend,.stage-dialog label{color:var(--muted)}
+.app-frame input::placeholder,.stage-dialog input::placeholder{color:var(--muted)}
+.app-frame input:focus,.stage-dialog input:focus{border-color:var(--ink)}
+.app-frame .result-empty{background:var(--glass);border:1px dashed var(--line);border-radius:28px;color:var(--muted)}
+.app-frame .empty.large{background:var(--glass);border-color:var(--line);box-shadow:var(--shadow)}
+.app-frame .tag,.app-frame .pool-icon{background:var(--soft)}
+.app-frame .badge{background:var(--soft);color:var(--muted)}
+.stage-progress-nav{padding:12px 18px 8px;border:1px solid var(--line);border-radius:28px;background:var(--glass);box-shadow:var(--shadow)}
+.stage-active-pill{background:var(--glass-control);border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--glass-edge),0 4px 15px #0000000b}
+.stage-progress-nav .stage-step.selected{color:var(--ink);font-weight:650}.stage-pointer{color:var(--ink)}.stage-pointer i{background:var(--ink);border-color:var(--bg);box-shadow:0 0 0 1px var(--line)}.stage-track-fill{background:var(--ink)}
+.select-popover,.obs-popover{background:color-mix(in srgb,var(--glass-solid) 94%,transparent);border:1px solid var(--line);box-shadow:var(--shadow),0 18px 60px #00000018;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.select-search{background:var(--glass-control)}.select-options>button.chosen{background:var(--soft);color:var(--ink)}
+.stage-dialog{background:color-mix(in srgb,var(--glass-solid) 96%,transparent);border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--glass-edge),0 32px 100px #00000030;overflow-x:hidden;animation-name:glass-dialog-in;animation-fill-mode:backwards}
+.stage-dialog.is-closing{animation-name:stage-dialog-out;animation-fill-mode:forwards}.stage-dialog>.click-spark{width:100%;height:100%}
+@keyframes glass-dialog-in{from{opacity:0;transform:translateY(28px) scale(.97)}to{opacity:1;transform:none}}
+.stage-dialog::backdrop{backdrop-filter:none;background:#00000060}
+.stage-config{box-shadow:inset 0 1px 0 var(--glass-edge)}
+.ranking-preview{background:var(--glass-control);border:1px solid var(--line);border-radius:20px}
+.dot-background{background-image:radial-gradient(#10101436 .85px,transparent 1.2px),radial-gradient(ellipse at 22% 26%,#7fb7cb1d,transparent 48%),radial-gradient(ellipse at 76% 38%,#bf9fc91b,transparent 48%);background-size:23px 23px,100% 100%,100% 100%;mask-image:linear-gradient(#000000b0,transparent 92%)}
+:root[data-theme=dark] .dot-background{background-image:radial-gradient(#ffffff38 .85px,transparent 1.2px),radial-gradient(ellipse at 22% 26%,#4787a118,transparent 48%),radial-gradient(ellipse at 76% 38%,#785e8f18,transparent 48%)}
+.dot-background.is-active{mask-image:none}
+.celebration{backdrop-filter:none;background:color-mix(in srgb,var(--bg) 82%,transparent)}
+.disclosure-trigger:hover{background:var(--soft)}
+.page-heading .library-heading-aside{position:absolute;bottom:0;right:0;gap:12px}.library-heading-aside .motion-deck{display:none}.draw-heading>div:first-child{max-width:100%}
+/* Keep song-card backgrounds tied to difficulty, including in OBS. */
+@supports not (backdrop-filter:blur(1px)){.topbar,.select-popover,.obs-popover{background:var(--glass-solid)}}
+@media(max-width:1100px){.app-frame{padding:16px 4% 0}.topbar{padding:0 18px;gap:12px}.brand:has(.brand-logo),.brand-logo{width:166px}.brand-logo{height:56px}.main-nav button{min-width:100px;padding:12px 14px}.page-heading h1,.page-heading .animated-title{font-size:clamp(58px,9vw,94px)}}
+@media(max-width:760px){.app-frame{padding:12px 18px 0}.topbar{top:12px;height:auto;min-height:128px;border-radius:30px;padding:12px 16px;gap:6px 10px}.brand:has(.brand-logo),.brand-logo{width:155px}.brand-logo{height:52px}.header-tools{margin-left:auto}.main-nav{width:100%;order:3;padding:4px;margin-top:2px}.main-nav button{min-width:0;font-size:15px;padding:12px 6px}.workspace{padding-top:30px}.page-heading,.draw-heading{min-height:184px;margin-bottom:30px;padding-bottom:46px}.page-heading h1,.page-heading .animated-title{font-size:clamp(40px,10vw,72px)}.page-heading .obs-access{bottom:0;right:50%;transform:translateX(50%)}.page-heading .obs-access>summary{font-size:14px;padding:9px 17px}.panel,.stage-config{border-radius:24px}.stage-progress-nav{border-radius:24px;padding:10px 12px 6px}}
+@media(prefers-reduced-transparency:reduce){.topbar,.panel,.stage-config,.select-popover,.obs-popover,.stage-dialog{background:var(--glass-solid);backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(prefers-reduced-motion:reduce){.stage-dialog,.tournament-stage-content,.select-popover{filter:none}.animated-title:after{display:none}}
+
+/* v1.6: leave room for focus rings inside the animated clipping container. */
+.disclosure-body>.template-body{padding:12px 28px 30px}
+.tournament-more-body{padding:12px 28px 30px}
+.tournament-management-actions{gap:14px;padding:0 0 24px}
+.tournament-reset-actions{padding-top:24px;border-top:1px solid var(--line-soft)}
+.tournament-reset-actions .danger{padding:12px 22px}
+.template-save input:focus-visible{outline-offset:3px}
+.ranking-actions{gap:18px;flex-wrap:wrap;align-items:center}
+.advance-button{min-width:148px;padding:13px 24px}
+.advancement-dialog{width:min(600px,calc(100vw - 32px))}
+.advancement-summary{font-size:18px;margin-bottom:24px}
+.advancement-roster{max-height:45vh;overflow:auto;display:grid;gap:10px;padding:4px}
+.advancement-roster>div{display:flex;align-items:center;gap:12px;padding:15px 18px;border-radius:16px;background:var(--soft)}
+.advancement-roster strong{flex:1;font-weight:550}.advancement-roster svg{color:#559039}
+.advancement-roster .mono{font-size:17px}.advancement-dialog .dialog-actions{gap:18px}
+/* A small compositor animation keeps the rail active even before the first result. */
+.stage-track-traveler{position:absolute;left:0;top:0;width:64px;height:100%;border-radius:inherit;background:linear-gradient(90deg,transparent,var(--ink),transparent);opacity:.38;animation:stage-rail-travel 4.4s ease-in-out infinite}
+.stage-pointer-halo{position:absolute;bottom:0;width:16px;height:16px;border-radius:50%;border:1px solid var(--ink);animation:stage-marker-pulse 3s ease-out infinite}
+.stage-pointer svg{animation:stage-arrow-breathe 3s ease-in-out infinite}
+.is-finished .stage-track-traveler{animation:none;opacity:0}
+@keyframes stage-rail-travel{0%,18%{transform:translateX(-64px);opacity:0}30%{opacity:.38}82%{opacity:.38}100%{transform:translateX(var(--track-width));opacity:0}}
+@keyframes stage-marker-pulse{0%,22%{transform:scale(1);opacity:0}28%{opacity:.42}85%,100%{transform:scale(2.7);opacity:0}}
+@keyframes stage-arrow-breathe{0%,25%,100%{translate:0 0}55%{translate:0 3px}}
+@media(max-width:760px){.disclosure-body>.template-body,.tournament-more-body{padding:12px 24px 26px}.ranking-actions>.row{width:100%}.advance-button{width:100%}.advancement-dialog .dialog-actions{flex-direction:row;justify-content:space-between}}
+@media(prefers-reduced-motion:reduce){.stage-track-traveler,.stage-pointer-halo{display:none}.stage-pointer svg{animation:none}}
+
+/* v1.7: upright cards; retain the original 500ms + 300ms staggered reveal. */
+.song-card.has-flip-reveal{perspective:1000px}
+.song-card-turn{position:relative;transform-style:preserve-3d;animation:upright-card-flip .7s var(--flip-delay) cubic-bezier(.34,1.56,.64,1) backwards}
+.song-card-front,.song-card-back{backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:inherit}
+.song-card-front{background:var(--diff-soft,var(--surface))}
+.song-card-back{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(145deg,color-mix(in srgb,var(--diff,#191919) 45%,#171719),#121214);transform:rotateY(180deg)}
+.card-back-disc{width:55%;aspect-ratio:1;border-radius:50%;border:1px solid #ffffff48;background:repeating-radial-gradient(circle at center,transparent 0 8px,#ffffff12 9px 10px);position:relative;box-shadow:0 0 0 12px #ffffff08}
+.card-back-disc:after{content:"";position:absolute;inset:38%;border-radius:50%;background:var(--diff,#ffde00);border:9px solid #ffffff30}
+@keyframes upright-card-flip{from{transform:rotateY(-180deg)}to{transform:rotateY(0deg)}}
+@media(prefers-reduced-motion:reduce){.song-card-turn{animation:none;transform:none}}

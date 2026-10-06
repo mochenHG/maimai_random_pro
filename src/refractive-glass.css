@@ -1,0 +1,60 @@
+/* Convex shoulders, clear centers and directional rim reflections.
+   Visual reference: rxing365/html-liquid-glass-effect-webgl.
+   Static geometry uses bounded normal maps, rather than a WebGL loop per widget. */
+:root{--lens-fill:#ffffff24;--lens-wash:#ffffff38;--lens-rim:#ffffffed;--lens-bottom:#8b9ca640;--lens-shadow:#293c4e15;--lens-contrast:#ffffff78;--lens-field:#ffffff20;--lens-menu:#eef3f5de}
+:root[data-theme=dark]{--lens-fill:#17202b22;--lens-wash:#ffffff12;--lens-rim:#ffffff90;--lens-bottom:#00000090;--lens-shadow:#00000032;--lens-contrast:#ffffff20;--lens-field:#ffffff08;--lens-menu:#161d27e8}
+.topbar,.app-frame .panel,.app-frame .empty,.result-empty,.stage-progress-nav,.stage-dialog,.select-popover,.obs-popover,.launcher-window{background-color:var(--lens-fill);background-image:linear-gradient(145deg,var(--lens-wash),transparent 24%,transparent 72%,var(--lens-field));border:1px solid color-mix(in srgb,var(--lens-rim) 55%,transparent);box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom),inset 3px 3px 8px #ffffff12,inset -3px -4px 10px #00000006,0 16px 42px var(--lens-shadow);backdrop-filter:blur(3px) saturate(1.2);-webkit-backdrop-filter:blur(3px) saturate(1.2)}
+@supports(backdrop-filter:url(#glass)){[data-glass-optics]{backdrop-filter:var(--refraction) blur(1.3px) saturate(1.22)!important;-webkit-backdrop-filter:var(--refraction) blur(1.3px) saturate(1.22)!important}}
+.topbar{background-color:var(--lens-fill);box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom),inset 0 5px 13px #ffffff12,0 10px 32px var(--lens-shadow)}
+.header-prism{background:linear-gradient(125deg,#ffffff1c,transparent 20%,transparent 82%,#ffffff14);box-shadow:inset 0 1px 0 #ffffffa0,inset 0 -1px 0 #ffffff28}
+.header-prism:after{height:3px;opacity:.45;width:130px}
+.app-frame button:not(.stage-step):not(.text-button):not(.disclosure-trigger):not(.difficulty-chip):not(.main-nav button),.app-frame .button,.obs-access>summary,.stage-dialog button:not(.text-button),.launcher-actions button,.launcher-actions .button,.launcher-theme{background-color:var(--lens-field);background-image:linear-gradient(155deg,var(--lens-contrast),transparent 42%,transparent 67%,var(--lens-wash));border:1px solid color-mix(in srgb,var(--lens-rim) 42%,transparent);box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom),inset 0 3px 8px #ffffff0d,0 4px 14px var(--lens-shadow);color:var(--ink)}
+.app-frame button.primary,.stage-dialog button.primary,.launcher-actions .primary{background-color:color-mix(in srgb,var(--ink) 86%,transparent);background-image:linear-gradient(145deg,#ffffff30,transparent 60%);color:var(--bg);border-color:color-mix(in srgb,var(--ink) 60%,transparent);box-shadow:inset 1px 1px 1px #ffffff90,inset -1px -1px 1px #00000038,0 8px 24px var(--lens-shadow)}
+.app-frame button:not(:disabled):hover,.stage-dialog button:not(:disabled):hover,.app-frame .button:hover{border-color:var(--lens-rim);box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom),0 6px 20px var(--lens-shadow)}
+.app-frame .main-nav button,.app-frame .stage-step,.app-frame .text-button{box-shadow:none!important;border-color:transparent!important;background:transparent}
+.main-nav:before,.stage-active-pill{background-color:var(--lens-field);background-image:linear-gradient(145deg,var(--lens-contrast),transparent 45%,var(--lens-wash));border:1px solid color-mix(in srgb,var(--lens-rim) 50%,transparent);box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom),0 4px 16px var(--lens-shadow)}
+.app-frame input:not([type=range]):not([type=checkbox]),.app-frame .select-trigger,.stage-dialog input:not([type=checkbox]),.stage-dialog .select-trigger,.select-search{background:linear-gradient(155deg,var(--lens-contrast),transparent 38%,var(--lens-field));border:1px solid color-mix(in srgb,var(--lens-rim) 34%,transparent);box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom),inset 0 2px 6px #00000004;color:var(--ink)}
+.app-frame input:disabled,.stage-dialog input:disabled{background:transparent;box-shadow:none;border-color:transparent}
+.app-frame .segmented,.range-mode,.app-frame .badge,.app-frame .tag,.pool-icon{background:linear-gradient(145deg,var(--lens-field),transparent 65%);border:1px solid color-mix(in srgb,var(--lens-rim) 36%,transparent);box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom)}
+.app-frame .segmented .selected,.stage-dialog .segmented .selected{background-image:linear-gradient(145deg,#ffffff48,transparent 60%);box-shadow:inset 1px 1px 1px #ffffffa0,inset -1px -1px 1px #00000028!important}
+.stage-config,.ranking-preview,.import-preview{background:linear-gradient(145deg,var(--lens-wash),transparent 35%,var(--lens-field));border:1px solid color-mix(in srgb,var(--lens-rim) 30%,transparent);box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom);backdrop-filter:none}
+.select-popover,.obs-popover,.stage-dialog{background-color:var(--lens-menu)}
+.select-options>button{background:transparent;border:1px solid transparent;box-shadow:none;color:var(--ink)}
+.select-options>button.chosen,.select-options>button.active{background:linear-gradient(145deg,var(--lens-contrast),var(--lens-field));border-color:var(--line);box-shadow:inset 0 1px 0 var(--lens-rim)}
+.app-frame .difficulty-chip{background-image:linear-gradient(155deg,#ffffff60,transparent 38%,#ffffff0c);border-color:color-mix(in srgb,var(--diff) 55%,transparent);box-shadow:inset 1px 1px 1px #ffffffa0,inset -1px -1px 1px #00000038,0 4px 12px var(--lens-shadow)}
+.app-frame .difficulty-chip.selected{background-color:color-mix(in srgb,var(--diff) 88%,transparent)}
+.song-card{background:color-mix(in srgb,var(--diff-soft,var(--surface)) 84%,transparent);border:1px solid color-mix(in srgb,var(--diff) 42%,#ffffff60);box-shadow:inset 1px 1px 1px #ffffffef,inset -1px -1px 1px #00000028,0 14px 36px var(--lens-shadow)}
+.song-card .card-body{background:linear-gradient(145deg,#ffffff52,transparent 38%,#ffffff12);box-shadow:inset 1px 0 1px #ffffffc0,inset -1px -1px 1px #ffffff50}
+.song-card-back{background:linear-gradient(145deg,#344453e8,#0c111bee 65%,#3f465ee8);box-shadow:inset 1px 1px 1px #ffffffbd,inset -1px -1px 1px #00000080}
+.song-row:hover{background:linear-gradient(145deg,var(--lens-wash),var(--lens-field));box-shadow:inset 0 1px 1px var(--lens-rim)}
+.stage-progress-rail{box-shadow:inset 0 1px 2px #00000018,0 1px 0 var(--lens-rim)}
+.notice{background:var(--lens-menu);color:var(--ink);border:1px solid var(--lens-rim);box-shadow:inset 1px 1px 1px var(--lens-rim),0 10px 32px var(--lens-shadow);backdrop-filter:blur(6px)}
+.notice button{color:var(--ink)}
+.launcher-window{--ink:#101419;--bg:#f8fafc;--lens-fill:#ffffff38;color:var(--ink)}
+.launcher-window.is-dark{--ink:#fafafa;--bg:#10151c;--lens-fill:#16202c58;--lens-field:#ffffff08;--lens-contrast:#ffffff20;--lens-rim:#ffffff90;--lens-bottom:#00000090;color:var(--ink);background-color:var(--lens-fill)}
+.launcher-card{background:linear-gradient(145deg,var(--lens-wash),transparent 55%);border:1px solid var(--line);box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom)}
+/* OBS retains a transparent canvas and legible glass plates. */
+.obs-body .obs-waiting,.obs-body .obs-standing-row{background-image:linear-gradient(145deg,#ffffff20,transparent 40%,#ffffff06);box-shadow:inset 1px 1px 1px #ffffff70,inset -1px -1px 1px #00000030}
+@media(max-width:760px),(pointer:coarse){.topbar,.app-frame .panel,.stage-progress-nav,.launcher-window{background-color:color-mix(in srgb,var(--glass-solid) 60%,transparent);backdrop-filter:none;-webkit-backdrop-filter:none}}
+.glass-lite .topbar,.glass-lite .panel,.glass-lite .stage-progress-nav{background-color:color-mix(in srgb,var(--glass-solid) 60%,transparent);backdrop-filter:none;-webkit-backdrop-filter:none}
+@media(prefers-reduced-transparency:reduce){.topbar,.app-frame .panel,.app-frame .empty,.result-empty,.stage-progress-nav,.stage-dialog,.select-popover,.obs-popover,.launcher-window{background:var(--glass-solid);backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@supports not(backdrop-filter:blur(1px)){.topbar,.app-frame .panel,.stage-progress-nav,.stage-dialog,.select-popover,.obs-popover{background-color:var(--glass-solid)}}
+
+/* Keep filtered backdrops separate from animated foregrounds. Chromium can
+   otherwise invalidate nested SVG filters and transformed stage indicators. */
+.topbar,.stage-progress-nav{position:relative;isolation:isolate;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.topbar{position:sticky}
+.topbar:before,.stage-progress-nav:before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;backdrop-filter:blur(3px) saturate(1.2);-webkit-backdrop-filter:blur(3px) saturate(1.2)}
+@supports(backdrop-filter:url(#glass)){.topbar[data-glass-optics]:before,.stage-progress-nav[data-glass-optics]:before{backdrop-filter:var(--refraction) blur(1.3px) saturate(1.22);-webkit-backdrop-filter:var(--refraction) blur(1.3px) saturate(1.22)}}
+.brand-logo-image,.brand-logo-image.is-current,:root[data-theme=dark] .brand-logo-image,:root[data-theme=dark] .brand-logo-image.is-current{filter:none;transition:opacity .3s,transform .55s var(--spring-ease)}
+.brand-logo-image>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.brand-logo-image .brand-dark{display:none}
+:root[data-theme=dark] .brand-logo-image .brand-dark{display:block}
+:root[data-theme=dark] .brand-logo-image .brand-light{display:none}
+.brand-logo,.stage-progress-strip{backface-visibility:hidden}
+.stage-pointer svg{filter:none;animation:none}
+.stage-pointer-halo{animation:stage-marker-soft-pulse 3s ease-in-out infinite}
+@keyframes stage-marker-soft-pulse{0%,100%{transform:scale(1);opacity:.14}50%{transform:scale(2.2);opacity:.28}}
+@media(max-width:760px),(pointer:coarse),(prefers-reduced-transparency:reduce){.topbar:before,.stage-progress-nav:before{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+.glass-lite .topbar:before,.glass-lite .stage-progress-nav:before{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+@media(prefers-reduced-motion:reduce){.stage-pointer-halo{animation:none;opacity:.18}}

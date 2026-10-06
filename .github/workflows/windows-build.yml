@@ -1,0 +1,44 @@
+name: Build Windows executable
+on:
+  workflow_dispatch:
+    inputs:
+      review_approved:
+        description: '网页与启动器外观已验收通过'
+        required: true
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  portable:
+    if: ${{ inputs.review_approved == true }}
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '11.25.0'
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Checks
+        run: |
+          pnpm check
+          pnpm lint
+          pnpm test
+      - name: Build frontend and executable
+        run: |
+          pnpm build
+          pnpm dist:portable
+      - name: Verify packaged server
+        shell: pwsh
+        run: |
+          $exe = (Get-ChildItem release/*.exe | Select-Object -First 1).FullName
+          $probe = Start-Process -FilePath $exe -ArgumentList '--self-test', '--port=5188', "--cache-dir=$env:RUNNER_TEMP/maimai-test", "--report=$env:RUNNER_TEMP/maimai-report.json" -WindowStyle Hidden -PassThru -Wait
+          if ($probe.ExitCode -ne 0) { throw 'Executable verification failed' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: maimai-random-pro-windows-x64
+          path: release/*.exe

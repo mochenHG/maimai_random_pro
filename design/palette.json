@@ -1,0 +1,38 @@
+{
+  "light": {
+    "bg": "#f5f7fa",
+    "ink": "#141820",
+    "muted": "#353f4d",
+    "surface": "#f7f9fc",
+    "surface-alt": "#eef2f7",
+    "soft": "#e5ebf3",
+    "line": "#8c9bab65",
+    "line-soft": "#8c9bab30",
+    "lens-fill": "#ffffffad",
+    "lens-field": "#f5f7fae8",
+    "lens-menu": "#f7f9fcfa",
+    "lens-wash": "#ffffff24",
+    "lens-contrast": "#ffffff50",
+    "primary-fill": "#17202c",
+    "primary-ink": "#ffffff",
+    "primary-hover": "#263449"
+  },
+  "dark": {
+    "bg": "#090e16",
+    "ink": "#f4f7fc",
+    "muted": "#e1e8f3",
+    "surface": "#151e2c",
+    "surface-alt": "#182537",
+    "soft": "#26364a",
+    "line": "#9bacbf55",
+    "line-soft": "#9bacbf30",
+    "lens-fill": "#111a29b3",
+    "lens-field": "#101825ee",
+    "lens-menu": "#131d2dfc",
+    "lens-wash": "#ffffff0c",
+    "lens-contrast": "#ffffff12",
+    "primary-fill": "#eaf0f9",
+    "primary-ink": "#111927",
+    "primary-hover": "#ffffff"
+  }
+}

@@ -1,0 +1,57 @@
+/* v1.8: a pointer-positioned light source behind glass, without pointer halos or scene loops. */
+:root{--liquid-fill:#ffffff70;--liquid-field:#ffffff62;--liquid-menu:#ffffffed;--liquid-edge:#ffffffed;--liquid-shade:#18182318;--liquid-reflect:#ffffffa6}
+:root[data-theme=dark]{--liquid-fill:#18181b86;--liquid-field:#ffffff0c;--liquid-menu:#17171ded;--liquid-edge:#ffffff42;--liquid-shade:#00000060;--liquid-reflect:#ffffff1c}
+.app-frame{position:relative;isolation:isolate}.workspace{z-index:1}
+.ambient-light{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ambient-source{position:absolute;left:0;top:0;transform:translate3d(var(--light-x,76vw),var(--light-y,152px),0) translate(-50%,-50%) scale(var(--light-scale,.18));transition:transform .18s ease-out;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle at 38% 28%,#ffffff 8%,#e3f2ff 50%,#bbcedf 85%,#c6badd);box-shadow:inset 0 0 0 1px #ffffffb0,inset -8px -12px 28px #97a5bb35,0 0 90px 26px #b2d6fa38;opacity:.8}
+.ambient-halo{position:absolute;width:min(1000px,110vw);height:750px;left:0;top:0;transform:translate3d(var(--light-x,76vw),var(--light-y,152px),0) translate(-50%,-50%) scale(var(--light-scale,.18));transition:transform .18s ease-out;background:radial-gradient(ellipse at 45% 45%,#d6e6f268,transparent 63%);border-radius:50%}
+:root[data-theme=dark] .ambient-source{background:radial-gradient(circle at 38% 28%,#fff 5%,#e9f3ff 45%,#a2bacd 90%);opacity:.6;box-shadow:inset 0 0 0 1px #ffffffb0,0 0 90px 30px #86b9ec26}
+:root[data-theme=dark] .ambient-halo{background:radial-gradient(ellipse at 45% 45%,#a9c4db28,transparent 63%)}
+/* Major surfaces receive the backdrop; nested controls reuse its glass lighting. */
+.app-frame .panel,.app-frame .result-empty,.app-frame .empty.large,.stage-progress-nav,.stage-dialog,.stage-config,.ranking-preview,.select-popover,.obs-popover{background-color:var(--liquid-fill);background-image:linear-gradient(135deg,var(--liquid-reflect),transparent 32%,transparent 75%,var(--liquid-field));border:1px solid var(--line);box-shadow:inset 1px 1px 0 var(--liquid-edge),inset -1px -1px 0 var(--liquid-shade),inset 0 0 10px #ffffff08,0 12px 35px #0000000a}
+.app-frame .panel,.stage-progress-nav{backdrop-filter:blur(4px) saturate(1.12);-webkit-backdrop-filter:blur(4px) saturate(1.12)}
+.select-popover,.obs-popover,.stage-dialog{background-color:var(--liquid-menu);backdrop-filter:blur(8px) saturate(1.15);-webkit-backdrop-filter:blur(8px) saturate(1.15)}
+.stage-config,.ranking-preview{backdrop-filter:none}
+.app-frame button:not(.primary):not(.stage-step):not(.text-button):not(.disclosure-trigger):not(.difficulty-chip):not(.main-nav button),.app-frame .button,.app-frame .obs-access>summary,.stage-dialog button:not(.primary),.select-options>button{background-color:var(--liquid-field);background-image:linear-gradient(135deg,var(--liquid-reflect),transparent 50%);border:1px solid var(--line);box-shadow:inset 1px 1px 0 var(--liquid-edge),inset -1px -1px 0 var(--liquid-shade),0 4px 14px #00000005}
+.app-frame button.primary,.stage-dialog button.primary{background-color:color-mix(in srgb,var(--ink) 88%,transparent);background-image:linear-gradient(135deg,#ffffff18,transparent 55%);color:var(--bg);border-color:color-mix(in srgb,var(--ink) 70%,transparent);box-shadow:inset 0 1px 0 #ffffff35,0 6px 20px #00000015}
+.app-frame input:not([type=range]):not([type=checkbox]),.app-frame .select-trigger,.stage-dialog input,.stage-dialog .select-trigger,.select-search{background-color:var(--liquid-field);background-image:linear-gradient(145deg,var(--liquid-reflect),transparent 45%);box-shadow:inset 1px 1px 0 var(--liquid-edge),inset 0 -1px 0 var(--liquid-shade);border:1px solid var(--line)}
+.app-frame input:disabled,.stage-dialog input:disabled{background:transparent;box-shadow:none;border-color:transparent}
+.app-frame .segmented,.range-mode,.app-frame .badge,.app-frame .tag{background:var(--liquid-field);border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--liquid-edge)}
+.main-nav:before,.stage-active-pill{background:var(--liquid-field);border:1px solid var(--line);box-shadow:inset 1px 1px 0 var(--liquid-edge),inset -1px -1px 0 var(--liquid-shade),0 4px 14px #0000000a}
+.disclosure-trigger{background:linear-gradient(135deg,var(--liquid-field),transparent 65%)}
+.select-options>button{border-color:transparent;box-shadow:none;background:transparent}.select-options>button.chosen,.select-options>button.active{background:var(--soft);box-shadow:inset 0 1px 0 var(--liquid-edge)}
+.difficulty-chip{background-image:linear-gradient(135deg,#ffffff48,transparent 50%);border:1px solid color-mix(in srgb,var(--diff) 58%,transparent);box-shadow:inset 0 1px 0 #ffffff85,inset 0 -1px 0 #00000015}
+.difficulty-chip.selected{background-color:color-mix(in srgb,var(--diff) 88%,transparent);box-shadow:inset 0 1px 0 #ffffff85,inset 0 -1px 0 #00000018}
+.song-card{background:color-mix(in srgb,var(--diff-soft,var(--surface)) 88%,transparent);border:1px solid color-mix(in srgb,var(--diff) 32%,transparent);box-shadow:inset 0 1px 0 #ffffffc0,inset 0 -1px 0 #00000018,0 12px 32px #0000000a}
+.song-card-front{background:transparent}.song-card .card-body{background:linear-gradient(135deg,#ffffff32,transparent 60%)}
+.song-row{border-radius:16px;padding-inline:12px}.song-row:hover{background:var(--liquid-field);box-shadow:inset 0 1px 0 var(--liquid-edge)}
+@media(max-width:760px){.ambient-source{width:180px;height:180px}.app-frame .panel,.stage-progress-nav{backdrop-filter:none;-webkit-backdrop-filter:none;background-color:color-mix(in srgb,var(--glass-solid) 68%,transparent)}}
+@media(prefers-reduced-transparency:reduce){.ambient-light{display:none}.app-frame .panel,.app-frame .result-empty,.app-frame .empty.large,.stage-progress-nav,.stage-dialog,.stage-config,.ranking-preview,.select-popover,.obs-popover{background:var(--glass-solid);backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@supports not(backdrop-filter:blur(1px)){.app-frame .panel,.stage-progress-nav,.stage-dialog,.select-popover,.obs-popover{background-color:var(--glass-solid)}}
+
+.glass-lite .panel,.glass-lite .stage-progress-nav{backdrop-filter:none;-webkit-backdrop-filter:none}
+
+@media(prefers-reduced-motion:reduce){.ambient-source,.ambient-halo{transition:none}}
+
+/* The existing disc wordmark is shared with navigation and cached once. */
+.song-card-back{overflow:hidden;isolation:isolate;box-shadow:inset 0 1px 0 #ffffff50,inset 0 0 0 1px #ffffff18}
+.song-card-back:before{content:"";position:absolute;inset:12px;border:1px solid #ffffff28;border-radius:16px;pointer-events:none}
+.song-card-back:after{content:"";position:absolute;inset:0;background:linear-gradient(125deg,#ffffff18,transparent 35%,transparent 70%,#ffffff0a);pointer-events:none}
+.song-card-back .card-back-disc{position:absolute;width:82%;opacity:.2;box-shadow:0 0 0 12px #ffffff04}
+.card-back-logo{position:relative;z-index:1;display:block;width:82%;padding:11px 10px;border-radius:18px;background:linear-gradient(135deg,#fff,#e6edf4ed);border:1px solid #ffffff90;box-shadow:inset 0 1px 0 #fff,0 8px 30px #00000030}
+.card-back-logo img{display:block;width:100%;height:auto;object-fit:contain}
+
+/* Keep editable endpoints compact and consistent with the glass controls. */
+.range-values{gap:10px}
+.app-frame .range-values input.range-value-input{width:calc((100% - 34px)/2);min-width:0;padding:10px 8px;text-align:center;font:20px Consolas,monospace;color:var(--ink);border-radius:14px}
+.range-values input[aria-invalid=true]{outline:1px solid #df5252;outline-offset:2px}
+
+/* Invert only the title glyphs inside the background sphere; no front halo. */
+.title-optics{position:relative}
+.title-inverse-mask{position:absolute;inset:-160px;pointer-events:none;clip-path:circle(var(--orb-radius,0px) at var(--orb-x,0px) var(--orb-y,0px));transition:clip-path .18s ease-out}
+.title-inverse-mask>.title-inverse{position:absolute;left:160px;top:160px;width:calc(100% - 320px);color:var(--bg);margin:0}
+.title-inverse .heading-dot{color:#495fff}
+@media(pointer:coarse),(prefers-reduced-motion:reduce),(prefers-reduced-transparency:reduce){.title-inverse-mask{display:none}}
+
+/* In light mode, shade the title sphere so reversed white glyphs stay readable. */
+:root:not([data-theme=dark]) .ambient-source:after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at 38% 28%,#4d668a,#25364d 72%,#17253c);opacity:var(--title-contrast,0);transition:opacity .18s ease-out;pointer-events:none}

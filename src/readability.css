@@ -1,0 +1,55 @@
+/* Translucent plates retain tested foreground contrast over the light sphere.
+   Optical edge refraction stays on separate background layers. */
+.app-frame,.stage-dialog,.select-popover,.obs-popover{color:var(--ink)}
+.app-frame .panel,.topbar,.stage-progress-nav,.result-empty,.app-frame .empty,.stage-dialog,.select-popover,.obs-popover{background-color:var(--lens-fill)}
+.select-popover,.obs-popover,.stage-dialog{background-color:var(--lens-menu)}
+.stage-config,.ranking-preview,.import-preview,.advancement-roster>div{background-color:var(--lens-field);color:var(--ink)}
+.app-frame .segmented button.selected,.stage-dialog .segmented button.selected{background:linear-gradient(145deg,#ffffff14,transparent 65%),var(--primary-fill)!important;color:var(--primary-ink)!important;border-color:var(--primary-fill)!important}
+.app-frame button.primary,.stage-dialog button.primary,.launcher-actions .primary{background:linear-gradient(145deg,#ffffff14,transparent 65%),var(--primary-fill)!important;color:var(--primary-ink)!important;border-color:var(--primary-fill)}
+.app-frame button.primary:not(:disabled):hover,.stage-dialog button.primary:not(:disabled):hover,.launcher-actions .primary:hover{background:var(--primary-hover)!important;color:var(--primary-ink)!important}
+.app-frame .select-trigger,.app-frame input:not([type=checkbox]):not([type=range]),.stage-dialog input:not([type=checkbox]),.stage-dialog .select-trigger,.select-search{background-color:var(--lens-field);color:var(--ink)}
+.app-frame .select-trigger,.stage-dialog .select-trigger,.select-search{background-image:linear-gradient(145deg,var(--lens-wash),transparent 60%)}
+.app-frame button:disabled,.stage-dialog button:disabled{opacity:1!important;color:var(--muted)!important;background:var(--surface-alt)!important;border-color:var(--line)!important;box-shadow:inset 0 1px 0 var(--lens-rim)}
+.app-frame input:disabled,.stage-dialog input:disabled{color:var(--muted);opacity:1}
+.app-frame input::placeholder,.stage-dialog input::placeholder,.select-search::placeholder{color:var(--muted);opacity:1}
+.app-frame .tag,.app-frame .badge,.app-frame .muted,.app-frame label,.app-frame legend,.stage-dialog label,.app-frame .hint,.app-frame .stage-summary{color:var(--muted)}
+.select-options>button.chosen,.select-options>button.active{background:var(--soft);color:var(--ink)}
+.song-card{--ink:#1b2430;--muted:#525d6a;color:var(--ink);background:var(--diff-soft,var(--surface))}
+.song-card-front{background:var(--diff-soft,var(--surface))}
+.song-card .card-body h3,.song-card .level,.song-card .card-constant b{color:var(--ink)}
+.song-card .card-constant,.song-card .card-body p{color:var(--muted)}
+.song-card .difficulty-BASIC{color:#286813}.song-card .difficulty-ADVANCED{color:#715500}.song-card .difficulty-EXPERT{color:#a5203d}.song-card .difficulty-MASTER{color:#623599}.song-card .difficulty-ReMASTER{color:#704493}.song-card .difficulty-UTAGE{color:#852956}
+.app-frame .difficulty-chip{opacity:1}
+.app-frame .difficulty-EXPERT.selected{background-color:#bb2548}.app-frame .difficulty-MASTER.selected{background-color:#7335b0}
+.app-frame button.danger,.stage-dialog button.danger{color:#a42a35}
+:root[data-theme=dark] .app-frame button.danger,:root[data-theme=dark] .stage-dialog button.danger{color:#ffadb4}
+.launcher-preview{background:var(--bg);background-image:radial-gradient(var(--line) .8px,transparent 1px);background-size:24px 24px}
+.launcher-window{width:720px;padding:24px;border-radius:32px;background:var(--bg);color:var(--ink);box-shadow:0 28px 80px #00000020;backdrop-filter:none!important}
+.launcher-top{padding:4px 20px;height:82px;margin-bottom:24px;border-radius:44px;background:var(--lens-fill);border:1px solid var(--line);box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom),0 8px 24px var(--lens-shadow)}
+.launcher-top .brand:has(.brand-logo),.launcher-top .brand-logo{width:192px;height:64px}
+.launcher-window .brand-light{display:block!important}.launcher-window .brand-dark{display:none!important}
+.launcher-window.is-dark .brand-light{display:none!important}.launcher-window.is-dark .brand-dark{display:block!important}
+.launcher-window .launcher-theme{background:var(--lens-field)!important;color:var(--ink)!important;flex-shrink:0}
+.launcher-card,.launcher-window.is-dark .launcher-card{background:var(--lens-fill);color:var(--ink);border-radius:28px;padding:42px 20px;min-height:250px}
+.launcher-card h1{font-size:clamp(32px,5vw,54px);font-weight:650;letter-spacing:-.065em;color:var(--ink)}
+.launcher-card h1 em{font-weight:400}.launcher-card h1>span{color:#b8a000}
+.launcher-status{font-size:16px;color:var(--muted);margin-top:22px}
+.launcher-window .launcher-actions button{background:var(--lens-field)!important;color:var(--ink)!important;border:1px solid var(--line)}
+.launcher-window .launcher-actions .primary{background:var(--primary-fill)!important;color:var(--primary-ink)!important;border:1px solid var(--primary-fill)}
+.launcher-window .launcher-actions .primary:hover{background:var(--primary-hover)!important;color:var(--primary-ink)!important}
+.launcher-top>.status-dot{margin-left:auto}
+/* Separate overlay root: never inherit the heading's 3D stacking context. */
+.page-heading .obs-access>button{font-size:15px;padding:11px 20px}
+.obs-floating.obs-popover{position:fixed;inset:auto;z-index:140;width:min(360px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;padding:20px;animation:menu-arrive .32s var(--spring-ease) backwards;transform-origin:100% 0;background-color:var(--lens-menu);color:var(--ink)}
+.obs-popover-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.obs-popover-heading strong{font-size:15px;line-height:1.5}
+.obs-floating .icon-button{width:32px;height:32px;flex-shrink:0;padding:0}
+.obs-floating input{font-size:13px;margin-bottom:14px;background:var(--lens-field);color:var(--ink);border:1px solid var(--line)}
+.obs-floating button,.obs-floating .button{font-size:14px;color:var(--ink);background:linear-gradient(145deg,var(--lens-wash),transparent 60%),var(--lens-field);border:1px solid var(--line);box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom)}
+.obs-floating .row{flex-wrap:wrap}
+/* A brighter rim and clearer plate reveal the moving sphere through the glass. */
+.app-frame .panel,.app-frame .empty,.result-empty,.stage-progress-nav{box-shadow:inset 1px 1px 1px var(--lens-rim),inset -1px -1px 1px var(--lens-bottom),inset 0 3px 9px #ffffff16,0 16px 42px var(--lens-shadow)}
+@media(max-width:760px){.page-heading .obs-access>button{font-size:14px;padding:9px 17px}}
+@media(prefers-reduced-motion:reduce){.obs-floating.obs-popover{animation:none}}
+@media(prefers-reduced-transparency:reduce){.app-frame .panel,.topbar,.stage-progress-nav,.result-empty,.app-frame .empty,.stage-dialog,.select-popover,.obs-popover{background-color:var(--glass-solid)}}
+@media(max-width:760px){.launcher-window{padding:20px}.launcher-top{padding:0 16px}.launcher-card{padding:36px 12px}.launcher-window .launcher-actions{grid-template-columns:1fr}}

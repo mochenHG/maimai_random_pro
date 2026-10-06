@@ -1,0 +1,15 @@
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App'
+import './styles.css'
+import './refinement.css'
+import './motion.css'
+import './glass.css'
+import './optics.css'
+import './liquid.css'
+import './refractive-glass.css'
+import './palette.generated.css'
+import './readability.css'
+import { initializeTheme } from './components/ThemeToggle'
+initializeTheme()
+createRoot(document.getElementById('root')!).render(<React.StrictMode><App /></React.StrictMode>)
