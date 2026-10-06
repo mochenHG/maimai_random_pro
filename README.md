@@ -4,7 +4,7 @@
 
 Logo 预览与下载：`http://127.0.0.1:5174/logos`。四张原图均为 2172 × 724 透明 PNG，原图与生成提示词见 `logos-v1.3.zip`。
 
-**本版已按用户要求打包为 Windows x64 免安装 EXE。** 启动器外观预览：`http://127.0.0.1:5174/launcher-preview`。运行文件位于 `release/`。具体改动见 `VERSION_NOTES.md`。启动器真实深色预览在 `release/launcher-dark.png`。
+**本版已打包为 Windows x64 免安装 EXE。** 启动器外观预览：`http://127.0.0.1:5174/launcher-preview`。运行文件位于 `release/`。具体改动见 `VERSION_NOTES.md`。启动器真实深色预览在 `release/launcher-dark.png`。
 
 启动器固定使用深色模式，移除主题切换，网站仍支持深浅主题。网站玻璃面板底色调整为约 68%–70% 不透明度，保留至少 4.5:1 的正文对比度；两个 OBS 展示入口改为独立悬浮菜单，避免标题视差或内容滤镜遮挡。菜单支持边缘避让、滚动定位、Esc 和点击外部关闭。
 
