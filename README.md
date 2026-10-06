@@ -86,7 +86,23 @@ Windows 打包脚本使用系统 C# 编译器，将当前构建、Node、ws、�
 2. 在 GitHub Release 中上传 `maimai-random-pro-2.5.0-win-x64.exe` 和校验文件，供用户下载。
 3. 发布后可在 Actions 手动运行 Windows 构建，并勾选已验收通过。工作流只生成构建产物，不会自动发布 Release。
 
-第三方依赖许可见 `THIRD_PARTY_NOTICES.md` 和 `licenses/`。曲目数据与远程封面保留各自权利。本项目未替原 randomPlus 指定新的开源许可证；正式发布时请按原项目授权选择仓库许可证。
+第三方依赖许可见 `THIRD_PARTY_NOTICES.md` 和 `licenses/`。曲目数据与远程封面保留各自权利，其权利归各自所有者。许可证与出处见下方「出处与授权」。
+
+
+## 出处与授权
+
+本项目是基于原作者 **EdHiro** 的开源项目 **mai2compete_rand_chartpicker**（`tournament_update` 分支）进行的二次开发与扩展：
+
+- 原项目地址：https://github.com/EdHiro/mai2compete_rand_chartpicker/tree/tournament_update
+
+**本项目已获得原作者授权**进行二次开发、修改与公开发布。在此感谢原作者 EdHiro 的原创工作。
+
+需要说明的授权状况：
+
+1. 原项目仓库当前**未提供 LICENSE 许可证文件**。因此原始部分的著作权仍归原作者 EdHiro 所有，本项目不对原始部分重新许可，也未主张其权利。
+2. 本项目自身新增与修改的部分，其权利归本项目作者所有。
+3. 本说明仅用于**如实记录出处与已获授权的事实**，不构成对第三方的开源许可授予。如果你希望在他人可自由使用、修改、分发的条件下发布本项目，请先与原作者确认，再补充相应的许可证文件。
+4. `THIRD_PARTY_NOTICES.md`、`licenses/` 中的第三方组件遵循其各自许可证；曲目数据与远程封面保留各自权利。
 
 
 ## 建议与反馈
