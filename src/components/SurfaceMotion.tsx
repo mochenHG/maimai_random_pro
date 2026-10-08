@@ -24,13 +24,7 @@ export default function SurfaceMotion() {
         light.style.setProperty('--light-x', `${latest.x}px`)
         light.style.setProperty('--light-y', `${latest.y}px`)
         light.style.setProperty('--light-scale', `${scale}`)
-        const radius = (light.querySelector<HTMLElement>('.ambient-source')?.offsetWidth || 240) * scale / 2
-        const distance = titleBounds ? Math.hypot(Math.max(titleBounds.left - latest.x, 0, latest.x - titleBounds.right), Math.max(titleBounds.top - latest.y, 0, latest.y - titleBounds.bottom)) : Infinity
-        light.style.setProperty('--title-contrast', `${Math.max(0, 1 - distance / radius)}`)
-      }
-      if (header && headerBounds) {
-        header.style.setProperty('--glass-x', `${latest.x - headerBounds.left}px`)
-        header.style.setProperty('--glass-y', `${latest.y - headerBounds.top}px`)
+
       }
       if (hero && titleBounds) {
         if (titleBounds.bottom > 0 && titleBounds.top < innerHeight) {

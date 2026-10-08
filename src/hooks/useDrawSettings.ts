@@ -9,8 +9,8 @@ export function useDrawSettings() {
     const data=load<Partial<Settings>>('maimai-pro-filters',{})
     return {poolId:typeof data.poolId==='string' ? data.poolId : defaults.poolId,difficulties:Array.isArray(data.difficulties) ? data.difficulties.filter(d=>DIFFICULTIES.includes(d)) : defaults.difficulties,type:['all','dx','standard'].includes(data.type || '') ? data.type! : defaults.type,count:[1,2,3,4].includes(data.count || 0) ? data.count! : defaults.count,rangeMode:data.rangeMode==='constant'?'constant':'level',...normalizeConstantRange(data.constantMin,data.constantMax),...normalizeGradeRange(data.min,data.max)}
   })
-  useEffect(()=> {save('maimai-pro-filters',settings)},[settings])
-  const update = <K extends keyof Settings>(key: K, value: Settings[K]) => setSettings(old=>({...old,[key]:value}))
-  const patch=(values:Partial<Settings>)=>setSettings(old=>({...old,...values}))
+  useEffect(()=>{const receive=(e:Event)=>{if((e as CustomEvent<string>).detail==='maimai-pro-filters')setSettings(load('maimai-pro-filters',defaults))};window.addEventListener('pro-remote',receive);return()=>window.removeEventListener('pro-remote',receive)},[])
+  const patch=(values:Partial<Settings>)=>{const next={...settings,...values};if(save('maimai-pro-filters',next))setSettings(next)}
+  const update = <K extends keyof Settings>(key: K, value: Settings[K]) => patch({[key]:value})
   return {settings,update,patch}
 }

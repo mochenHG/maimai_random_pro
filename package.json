@@ -1,6 +1,6 @@
 {
   "name": "maimai-random-pro",
-  "version": "2.5.0",
+  "version": "3.6.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,7 +12,8 @@
     "test": "node --test tests/*.test.mjs",
     "lint": "eslint src",
     "dist:win": "npm run build && npm run dist:portable",
-    "dist:portable": "powershell -NoProfile -File scripts/build-portable.ps1"
+    "dist:portable": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-portable.ps1",
+    "dist:source": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-source.ps1"
   },
   "dependencies": {
     "lucide-react": "0.511.0",
@@ -28,7 +29,7 @@
     "@types/react-dom": "18.3.1",
     "@vitejs/plugin-react": "4.4.1",
     "eslint": "9.25.0",
-    "eslint-plugin-react-hooks": "5.2.4",
+    "eslint-plugin-react-hooks": "5.2.0",
     "globals": "16.0.0",
     "typescript": "5.8.3",
     "typescript-eslint": "8.30.1",

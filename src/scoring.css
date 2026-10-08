@@ -1,0 +1,54 @@
+/* Shared entry geometry: one compact score row on desktop, paired fields on phones. */
+.scoring-panel,.tiebreak-panel,.ranking-panel{scroll-margin-top:150px}
+.scoring-toolbar{display:grid;grid-template-columns:minmax(220px,300px) minmax(220px,360px);gap:20px;align-items:end}
+.score-song-tabs{display:flex;gap:12px;overflow-x:auto;scrollbar-width:thin;padding:3px 2px 12px;scroll-snap-type:x proximity}
+.score-song-tabs button{display:flex;align-items:center;gap:14px;text-align:left;flex:0 0 min(260px,80vw);min-width:0;border-radius:18px!important;scroll-snap-align:start;padding:15px 18px}
+.score-song-tabs button>span:last-child{display:grid;gap:7px;min-width:0;overflow-wrap:anywhere;line-height:1.5}
+.score-song-tabs .mono{font-size:14px;opacity:.7}
+.score-song-tabs small{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.score-entry-form{display:grid;gap:22px;min-width:0}
+.score-matrix table{width:100%;border-collapse:collapse;min-width:600px;table-layout:fixed}
+.score-matrix th,.score-matrix td,.saved-ranking th,.saved-ranking td,.round-history th,.round-history td{padding:15px 12px;text-align:left;border-bottom:1px solid var(--line-soft);vertical-align:middle;line-height:1.55}
+.score-matrix th{font-size:14px;color:var(--muted);font-weight:500}
+.score-matrix td{font-size:15px}
+.score-matrix strong{font-weight:600;overflow-wrap:anywhere;display:block}
+.score-matrix small,.score-save-bar small,.round-history summary small{display:block;font-size:12px;font-weight:400;line-height:1.65;color:var(--muted);margin-top:6px;overflow-wrap:anywhere}
+.score-input-shell{position:relative;min-width:0}
+.score-input-shell input{width:100%!important;max-width:190px;min-width:0;font-size:16px!important;padding-right:32px!important}
+.score-input-shell>span{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none}
+.score-input-shell:has(input[data-score-column=score]){max-width:190px}
+.score-save-bar{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding-top:22px;border-top:1px solid var(--line)}
+.score-save-bar>p{font-size:14px!important;max-width:52ch;color:var(--muted)}
+.score-save-bar button{white-space:nowrap}
+.pending-score-list{max-height:280px;overflow:auto;scrollbar-width:thin;display:grid;gap:8px;padding:14px 0}
+.pending-score-list p{font-size:13px!important;line-height:1.7!important}
+.tiebreak-editor{display:grid;gap:22px;min-width:0;padding-top:24px;border-top:1px solid var(--line)}
+.tiebreak-editor>.section-title{margin:0;flex-wrap:wrap;gap:14px}
+.tiebreak-editor>.form-field{width:min(560px,100%)}
+.round-history>summary>span{min-width:0;overflow-wrap:anywhere}
+.round-history .table-scroll{margin-top:16px}
+.round-history table{width:100%;border-collapse:collapse;min-width:430px}
+.roster-table.players-table{min-width:520px}
+.roster-next-step{margin:20px 0 0;color:var(--muted);line-height:1.75}
+.ranking-panel .ranking-actions{margin:0;padding:0;border:0;gap:20px}
+.ranking-panel .advance-button{width:auto}
+.saved-ranking table{width:100%;border-collapse:collapse;min-width:640px;font-size:15px}
+.saved-ranking th{font-size:13px;color:var(--muted);font-weight:500}
+.saved-ranking td strong{font-weight:600}
+@media(max-width:760px){
+  .scoring-toolbar{grid-template-columns:1fr;gap:18px}
+  .score-matrix{overflow:visible}
+  .score-matrix table,.score-matrix tbody{display:block;min-width:0;width:100%}
+  .score-matrix thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .score-matrix tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px 14px;padding:22px 0;border-bottom:1px solid var(--line);margin:0}
+  .score-matrix td{display:block;border:0;padding:0;min-width:0}
+  .score-matrix td:first-child,.score-matrix .score-progress{grid-column:1/-1}
+  .score-matrix td[data-label]:before{content:attr(data-label);display:block;color:var(--muted);font-size:13px;margin-bottom:8px}
+  .score-input-shell,.score-input-shell input,.score-input-shell:has(input[data-score-column=score]){max-width:none}
+  .score-save-bar{align-items:stretch;gap:18px}
+  .score-save-bar>.row{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .score-save-bar>.row button{padding:11px 8px!important;min-width:0}
+  .score-song-tabs button{flex-basis:240px}
+  .ranking-panel .ranking-actions{align-items:stretch}
+  .ranking-panel .advance-button{width:100%}
+}

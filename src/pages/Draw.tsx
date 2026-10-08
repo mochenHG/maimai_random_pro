@@ -1,3 +1,4 @@
+import ChartHistoryPanel from '../components/ChartHistoryPanel'
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowUpRight, RotateCcw, Search, Shuffle } from 'lucide-react'
 import { DIFFICULTIES } from '../types'
@@ -30,9 +31,10 @@ export default function Draw({ openLibrary }: { openLibrary: () => void }) {
   useEffect(()=>()=>clearTimeout(drawTimer.current),[])
   const missingConstants=songs.filter(s=>s.levelValue===null).length
   const rangeChange=(a:number,b:number)=>{patch(rangeMode==='constant'?{constantMin:a,constantMax:b}:{min:formatGrade(a),max:formatGrade(b)});setPage(0)}
-  const draw = () => {if(drawing)return; setDrawing(true); drawTimer.current=setTimeout(()=>{const result = useSongStore.getState().draw(filtered, count); notice(`${result.reset ? '候选谱面已抽完，开始新一轮。' : ''}已抽取 ${result.count} 张${result.count < count ? '，本轮剩余谱面不足' : ''}。`); setDrawing(false)}, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 260) }
+  const draw = () => {if(drawing)return; setDrawing(true); drawTimer.current=setTimeout(()=>{try {const result = useSongStore.getState().draw(filtered, count); notice(`${result.reset ? '候选谱面已抽完，开始新一轮。' : ''}已抽取 ${result.count} 张${result.count < count ? '，本轮剩余谱面不足' : ''}。`); }catch(e){notice(e instanceof Error?e.message:'抽谱失败。')}finally{setDrawing(false)}}, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 260) }
   return <>
     <div className="page-heading draw-heading"><div><AnimatedTitle text="next track"/></div><OBSLink/></div>
+    <ChartHistoryPanel/>
     {!pools.length ? <div className="empty large"><div className="empty-symbol">♪</div><h2>先加入你的曲库</h2><p>导入 JSON，或手动获取在线曲库。</p><button className="primary" onClick={openLibrary}>导入曲库 <ArrowUpRight size={16}/></button></div> : <div className="draw-layout">
       <section className="panel settings"><div className="section-title"><h2>抽谱设置</h2><button className="icon-button" title="重置筛选" aria-label="重置筛选" onClick={reset}><RotateCcw size={16}/></button></div>
         <label>曲库<Select label="曲库" value={poolId} onChange={v => {setPoolId(v);setPage(0)}} options={[{value:'all',label:'所有曲库'},...pools.map(p=>({value:p.id,label:p.name}))]}/></label>

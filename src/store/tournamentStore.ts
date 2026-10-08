@@ -1,3 +1,6 @@
+import { aggregatePlayer, applyScoreEdits, cutoffTies, scoreFingerprint, switchScoreMode, validateChartScore, type ScoreEdit } from '../lib/scoring'
+import { checkpoint } from '../lib/snapshots'
+import type { ChartScore } from '../types'
 import { create } from 'zustand'
 import type { Player, RosterEntry, Song, Stage, TournamentTemplate } from '../types'
 import { load, save } from '../lib/storage'
@@ -5,16 +8,16 @@ import { normalizeSongs } from '../lib/songs'
 import { defaultStages, groupPlayers, mergeRoster, routeStageResults, validateStages } from '../lib/tournament'
 export const TOURNAMENT_KEY = 'maimai-pro-tournament'
 const TEMPLATE_KEY='maimai-pro-templates'
-interface Persisted { stages: Stage[]; currentStage: string; started: boolean; customMode:boolean }
+interface Persisted { eventId?:string; stages: Stage[]; currentStage: string; started: boolean; customMode:boolean }
 function legacySongs(value:unknown):Song[] {
   if(!Array.isArray(value))return []
   const songs=value.flatMap(entry=>{try{const song=entry && typeof entry==='object' && 'song' in entry?entry.song:entry;return song?normalizeSongs([song]):[]}catch{return []}})
   return [...new Map(songs.map(song=>[song.id,song])).values()]
 }
 function initial(): Persisted {
-  const fallback={stages:validateStages(defaultStages()),currentStage:'n216',started:false,customMode:false}
+  const fallback={eventId:crypto.randomUUID(),stages:validateStages(defaultStages()),currentStage:'n216',started:false,customMode:false}
   const data=load<Persisted|null>(TOURNAMENT_KEY,null)
-  if(data){try{const stages=validateStages(data.stages);return {stages,currentStage:stages.some(s=>s.id===data.currentStage)?data.currentStage:stages[0].id,started:!!data.started,customMode:!!data.customMode || stages.some(s=>!defaultStages().some(d=>d.id===s.id && d.name===s.name && d.advanceCount===s.advanceCount))}}catch{return fallback}}
+  if(data){try{const stages=validateStages(data.stages);return {eventId:data.eventId??'legacy-event',stages,currentStage:stages.some(s=>s.id===data.currentStage)?data.currentStage:stages[0].id,started:!!data.started,customMode:!!data.customMode || stages.some(s=>!defaultStages().some(d=>d.id===s.id && d.name===s.name && d.advanceCount===s.advanceCount))}}catch{return fallback}}
   const legacy=load<{stages?:Record<string,Stage>;currentStage?:string;isTournamentStarted?:boolean;isCustomMode?:boolean;customStages?:Stage[]}>('tournament-data',{})
   if(legacy.stages){try{
     const source=legacy.isCustomMode && legacy.customStages?.length?legacy.customStages:fallback.stages
@@ -33,6 +36,8 @@ function initialTemplates():TournamentTemplate[] {
   }catch{return []}}):[]
 }
 interface TournamentState extends Persisted {
+  saveScores:(id:string,mode:'total'|'songs',edits:ScoreEdit[])=>void
+  setScoreMode:(id:string,mode:'total'|'songs')=>void; setChartScore:(id:string,playerId:string,songId:string,score:ChartScore)=>void; addTiebreak:(id:string,scores:Record<string,ChartScore>,note:string)=>void
   undo:Persisted|null;templates:TournamentTemplate[]
   importPlayers:(stageId:string,entries:RosterEntry[],mode:'merge'|'append')=>string
   updatePlayer:(stageId:string,id:string,data:Partial<Player>)=>void
@@ -43,8 +48,19 @@ interface TournamentState extends Persisted {
   importBackup:(text:string)=>void;reset:()=>void
   saveTemplate:(name:string)=>void;loadTemplate:(id:string)=>void;deleteTemplate:(id:string)=>void
 }
+let preparedWrite=false
+/** A failed local write keeps the current stage and the entry draft intact; a successful save publishes once. */
+function saveStageChange(state:TournamentState,stages:Stage[],set:(data:Partial<TournamentState>)=>void){
+  const data={eventId:state.eventId,stages,currentStage:state.currentStage,started:state.started,customMode:state.customMode}
+  if(!save(TOURNAMENT_KEY,data))throw new Error('成绩未保存，本地存储不可用。请保留暂存成绩并重试。')
+  preparedWrite=true;try{set({...data,undo:null})}finally{preparedWrite=false}
+}
 export const useTournamentStore=create<TournamentState>((set,get)=>({
   ...initial(),undo:null,templates:initialTemplates(),
+  setScoreMode:(id,mode)=>{const stage=get().stages.find(s=>s.id===id);if(!stage)throw new Error('阶段不存在。');const updated=switchScoreMode(stage,mode);if(updated!==stage)set({stages:get().stages.map(s=>s.id===id?updated:s),undo:null})},
+  saveScores:(id,mode,edits)=>{const state=get(),stage=state.stages.find(s=>s.id===id);if(!stage)throw new Error('阶段不存在。');const updated=applyScoreEdits(stage,mode,edits);saveStageChange(state,state.stages.map(s=>s.id===id?updated:s),set)},
+  setChartScore:(id,playerId,songId,score)=>{validateChartScore(score);const stage=get().stages.find(s=>s.id===id);if(!stage||stage.locked||stage.scoreMode!=='songs'||!stage.songs.some(s=>s.id===songId))throw new Error('当前歌曲不可计分。');set({stages:get().stages.map(s=>s.id===id?{...s,players:s.players.map(p=>p.id===playerId?aggregatePlayer({...p,chartScores:{...p.chartScores,[songId]:score}},s.songs):p)}:s),undo:null})},
+  addTiebreak:(id,scores,note)=>{const state=get(),stage=state.stages.find(s=>s.id===id);if(!stage||stage.locked)throw new Error('阶段已锁定。');const ids=Object.keys(scores);if(!cutoffTies(stage).some(group=>group.length===ids.length&&group.every(p=>ids.includes(p.id))))throw new Error('加赛名单必须对应当前晋级分界的完整同分组选手。');Object.values(scores).forEach(v=>{validateChartScore(v);if(v.score===null)throw new Error('请填齐加赛完成率。')});if((stage.tiebreaks?.length??0)>=100)throw new Error('该阶段加赛记录已达100轮。');saveStageChange(state,state.stages.map(s=>s.id===id?{...s,tiebreaks:[...(s.tiebreaks??[]),{id:crypto.randomUUID(),timestamp:Date.now(),note:note.slice(0,160),scores,fingerprint:scoreFingerprint(s)}]}:s),set)},
   importPlayers:(stageId,entries,mode)=>{
     const stage=get().stages.find(s=>s.id===stageId)
     if(!stage || stage.locked)throw new Error('当前阶段已锁定，无法导入。')
@@ -59,7 +75,7 @@ export const useTournamentStore=create<TournamentState>((set,get)=>({
   commit:id=>{
     const state=get();if(!state.started)throw new Error('请先开始赛事。')
     const stages=routeStageResults(state.stages,id)
-    set({stages,undo:{stages:state.stages,currentStage:state.currentStage,started:state.started,customMode:state.customMode}})
+    void checkpoint('确认晋级前').catch(()=>{});set({stages,undo:{eventId:state.eventId,stages:state.stages,currentStage:state.currentStage,started:state.started,customMode:state.customMode}})
   },
   undoRanking:()=>{const undo=get().undo;if(undo)set({...undo,undo:null})},
   configure:(stages,customMode=true)=>{
@@ -74,25 +90,27 @@ export const useTournamentStore=create<TournamentState>((set,get)=>({
     const validated=validateStages(configured)
     set({stages:validated,currentStage:validated.some(s=>s.id===state.currentStage)?state.currentStage:validated[0].id,customMode,undo:null})
   },
-  setSongs:(id,songs)=>set(state=>({stages:state.stages.map(s=>s.id===id && !s.locked?{...s,songs}:s)})),
+  setSongs:(id,songs)=>set(state=>({stages:state.stages.map(s=>s.id===id && !s.locked?{...s,songs,players:s.scoreMode==='songs'?s.players.map(p=>aggregatePlayer(p,songs)):s.players}:s)})),
   generateGroups:id=>{const stage=get().stages.find(s=>s.id===id);if(!stage || stage.locked)return;set({stages:get().stages.map(s=>s.id===id?{...s,groups:groupPlayers(s)}:s),undo:null})},
   assignGroup:(stageId,playerId,groupId)=>set(state=>({stages:state.stages.map(s=>s.id===stageId && !s.locked && s.players.some(p=>p.id===playerId)?{...s,groups:s.groups?.map(g=>({...g,playerIds:[...g.playerIds.filter(id=>id!==playerId),...(g.id===groupId?[playerId]:[])]}))}:s),undo:null})),
   importBackup:text=>{
     const data=JSON.parse(text) as Persisted;const stages=validateStages(data.stages)
     if(!stages.some(s=>s.id===data.currentStage))throw new Error('备份的当前阶段无效。')
-    set({stages,currentStage:data.currentStage,started:!!data.started,customMode:!!data.customMode,undo:null})
+    void checkpoint('恢复赛事备份前').catch(()=>{});set({eventId:data.eventId??crypto.randomUUID(),stages,currentStage:data.currentStage,started:!!data.started,customMode:!!data.customMode,undo:null})
   },
-  reset:()=>set({stages:validateStages(defaultStages()),currentStage:'n216',started:false,customMode:false,undo:null}),
+  reset:()=>{void checkpoint('重置赛事前').catch(()=>{});set({eventId:crypto.randomUUID(),stages:validateStages(defaultStages()),currentStage:'n216',started:false,customMode:false,undo:null})},
   saveTemplate:name=>{
     if(!name.trim() || name.trim().length>80)throw new Error('请输入模板名称。')
-    const stages=get().stages.map((s,i)=>({...s,locked:false,groups:[],songs:[],players:i===0?s.players.map(p=>({...p,score:null,dxScore:null,rank:null,advanced:false})):[]}))
+    const stages=get().stages.map((s,i)=>({...s,locked:false,groups:[],songs:[],tiebreaks:[],players:i===0?s.players.map(p=>({...p,score:null,dxScore:null,chartScores:{},legacyTotals:undefined,rank:null,advanced:false})):[]}))
     const existing=get().templates.find(t=>t.name===name.trim());const template={id:existing?.id??crypto.randomUUID(),name:name.trim(),stages}
     const templates=[...get().templates.filter(t=>t.id!==template.id),template]
     if(templates.length>50)throw new Error('最多保存 50 个模板。')
     if(!save(TEMPLATE_KEY,templates))throw new Error('模板保存失败。')
     set({templates})
   },
-  loadTemplate:id=>{const template=get().templates.find(t=>t.id===id);if(!template)throw new Error('模板不存在。');const stages=validateStages(structuredClone(template.stages));set({stages,currentStage:stages[0].id,started:false,customMode:true,undo:null})},
+  loadTemplate:id=>{const template=get().templates.find(t=>t.id===id);if(!template)throw new Error('模板不存在。');const stages=validateStages(structuredClone(template.stages));void checkpoint('载入模板前').catch(()=>{});set({eventId:crypto.randomUUID(),stages,currentStage:stages[0].id,started:false,customMode:true,undo:null})},
   deleteTemplate:id=>{const templates=get().templates.filter(t=>t.id!==id);if(!save(TEMPLATE_KEY,templates))throw new Error('模板未删除，请重试。');set({templates})},
 }))
-useTournamentStore.subscribe(state=>save(TOURNAMENT_KEY,{stages:state.stages,currentStage:state.currentStage,started:state.started,customMode:state.customMode}))
+useTournamentStore.subscribe(state=>{if(!preparedWrite)save(TOURNAMENT_KEY,{eventId:state.eventId,stages:state.stages,currentStage:state.currentStage,started:state.started,customMode:state.customMode})})
+
+window.addEventListener('pro-remote',e=>{if((e as CustomEvent<string>).detail===TOURNAMENT_KEY)useTournamentStore.setState({...initial(),undo:null})})

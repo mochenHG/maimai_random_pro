@@ -1,0 +1,8 @@
+{
+  "BASIC": { "fill": "#68c645", "ink": "#103006" },
+  "ADVANCED": { "fill": "#edbd23", "ink": "#302700" },
+  "EXPERT": { "fill": "#c9294d", "ink": "#ffffff" },
+  "MASTER": { "fill": "#8450bc", "ink": "#ffffff" },
+  "ReMASTER": { "fill": "#dec2fa", "ink": "#472562" },
+  "UTAGE": { "fill": "#ea88b9", "ink": "#4e1633" }
+}

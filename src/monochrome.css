@@ -1,0 +1,68 @@
+/* Grayscale glass and controls; yellow brand/title punctuation, with semantic chart colors.
+   Visual references: xiaojiaenen/liquid-glass (thin tint, optical rim) and ignoredone.space (type/spacing).
+   No external component implementation is bundled. */
+:root,:root[data-theme=dark]{--yellow:#f4d900;--yellow-strong:#f4d900;--glass:var(--glass-plate);--glass-edge:var(--lens-rim);--glass-shade:var(--lens-bottom);--liquid-fill:var(--glass-plate);--liquid-field:var(--lens-field);--liquid-menu:var(--lens-menu);--liquid-reflect:var(--glass-wash);--liquid-edge:var(--lens-rim);--liquid-shade:var(--lens-bottom)}
+.app-frame{background:none!important}
+.heading-dot{color:var(--yellow)!important}
+.title-inverse .heading-dot{color:var(--yellow)!important}
+::selection{background:var(--ink);color:var(--bg)}
+/* The white emitter stays behind every surface. No separate pointer halo or painted card hotspot. */
+.ambient-light{z-index:0}
+.ambient-source,:root[data-theme=dark] .ambient-source{width:220px;height:220px;background:radial-gradient(circle at 38% 32%,#fff 0 24%,#f5f5f5 48%,#d5d5d5 88%);opacity:.88;box-shadow:inset 0 0 0 1px #ffffffb0,inset -8px -12px 25px #00000016,0 0 28px 9px #ffffff3d}
+:root:not([data-theme=dark]) .ambient-source{box-shadow:inset 0 0 0 1px #fff,inset -8px -12px 25px #00000012,0 0 24px 5px #ffffffa0}
+.ambient-source:after,.ambient-halo,.header-prism:before,.header-prism:after{display:none!important}
+/* Only duplicate text is clipped to the emitter. A thin contour keeps white inverse
+   letters readable over the light-theme white orb without painting a card halo. */
+:root:not([data-theme=dark]) .title-inverse{color:#fff;-webkit-text-stroke:1.25px #171717;paint-order:stroke fill}
+:root[data-theme=dark] .title-inverse{color:#000;-webkit-text-stroke:0}
+.title-inverse .heading-dot{-webkit-text-stroke:0}
+.app-frame .empty,.result-empty{border-radius:28px;overflow:hidden;color:var(--muted)}
+.table-scroll>.empty,.score-empty{border-radius:22px;min-height:130px;margin-top:12px;border:1px solid var(--line-soft)}
+.app-frame .status-dot{background:var(--ink);border:1px solid var(--ink)}
+.app-frame .status-dot.offline,.app-frame .status-dot.pairing{background:transparent;opacity:.6}
+.app-frame .status-dot.connecting{background:var(--muted);opacity:.6}
+.app-frame .badge,.app-frame .tag,.app-frame .import-status,.app-frame .issues,.app-frame .import-status.failed,.app-frame .pool-icon{background:var(--lens-field)!important;color:var(--ink)!important;border-color:var(--line)!important}
+.error,.advance,.app-frame button.danger,.stage-dialog button.danger,.advancement-roster svg{color:var(--ink)!important}
+.app-frame .error,.stage-dialog .error{border-left:2px solid var(--ink);padding:8px 14px;background:var(--lens-field);border-radius:0 12px 12px 0}
+.app-frame .empty-symbol,.celebration-icon{background:var(--soft);color:var(--ink)}
+.celebration-halo{background:radial-gradient(circle,#ffffff30,transparent 60%)}
+.celebration-particles i{background:var(--ink)!important}
+.app-frame .theme-toggle:hover{background:var(--ink);color:var(--bg)}
+.app-frame input[type=checkbox]{accent-color:var(--ink)}
+.app-frame input[type=checkbox]:checked:before{background:var(--bg)}
+/* Difficulty controls/bars are the deliberate color exception; see difficulty.css. */
+.song-card:not(.collectible-card){background:var(--glass-plate)!important;border:1px solid var(--line)!important;color:var(--ink)!important}
+.song-card .card-body{background:linear-gradient(145deg,var(--glass-wash),transparent 55%);border-top-color:var(--line);color:var(--ink)}
+.song-card .card-body h3,.song-card .level,.song-card .card-constant b{color:var(--ink)}
+.song-card .card-constant,.song-card .card-meta,.song-card .card-body p{color:var(--muted)}
+.song-card:not(.collectible-card) .cover img,.song-row img,.song-cover img{filter:grayscale(1)}
+.song-card:hover:after{opacity:0}
+.song-card-back{background:linear-gradient(145deg,#303030e8,#101010ee 65%,#393939e8)}
+.obs-standing-row{background-color:#151515e0!important;border-color:#ffffff50!important;color:#fafafa!important}
+.obs-body .advance,.obs-body .error{color:var(--ink)!important}
+.score-song-tabs button.selected{background:var(--primary-fill)!important;color:var(--primary-ink)!important;border-color:var(--primary-fill)!important}
+.score-song-tabs button.selected small{color:var(--primary-ink)}
+@media(max-width:760px),(pointer:coarse),(prefers-reduced-transparency:reduce){.ambient-light{display:none}}
+
+/* General controls stay grayscale; explicit result colors live in result-status.css. */
+.app-frame .stage-pointer{color:var(--ink)}
+.app-frame .stage-pointer i{background:var(--ink);box-shadow:0 0 0 1px var(--line)}
+.app-frame button.primary:hover{box-shadow:0 8px 24px var(--glass-drop)}
+.raffle-card-front,.raffle-card-back{background:var(--glass-plate)!important}
+/* Nested cards share their parent's contrast plate instead of stacking another opaque tint. */
+.app-frame .raffle-card-front,.app-frame .raffle-card-back,.app-frame .address-card,.app-frame .pairing-code-card,.app-frame .panel .song-card:not(.collectible-card){background:var(--glass-control)!important}
+.obs-body .obs-ranking{background:var(--glass-plate)}
+.obs-body .obs-live-state>span{background:var(--ink)}
+.obs-body .obs-live-state.is-offline>span{background:transparent;border:1px solid var(--ink)}
+.obs-body .obs-player-advanced,.obs-body .obs-player-eliminated,.obs-body .obs-player-repechage{background:var(--lens-field);border-color:var(--line)}
+.obs-body img.obs-jacket,.obs-body .obs-jacket img{filter:grayscale(1)}
+.hero-disc,.hero-sticker{background:var(--surface)!important;color:var(--ink)!important;border-color:var(--line)!important}
+.hero-spark{color:var(--ink)!important}
+.app-frame .dot-background{background-image:radial-gradient(#10101036 .85px,transparent 1.2px);background-size:23px 23px}
+:root[data-theme=dark] .app-frame .dot-background{background-image:radial-gradient(#ffffff38 .85px,transparent 1.2px)}
+.app-frame .stage-track-fill{background:var(--ink)}
+.app-frame .range-rail{background:linear-gradient(to right,var(--line) var(--from),var(--ink) var(--from),var(--ink) var(--to),var(--line) var(--to))}
+.select-options>button.chosen,.select-options>button.active{background:var(--lens-field)!important;color:var(--ink)!important}
+.app-frame .accent-orbit i{background:var(--ink)}
+.celebration-icon{box-shadow:0 18px 70px var(--lens-shadow)}
+:where(.app-frame,.stage-dialog,.select-popover,.obs-popover) :is(input,button,select,a,textarea):focus-visible{outline:2px solid var(--ink);outline-offset:3px}

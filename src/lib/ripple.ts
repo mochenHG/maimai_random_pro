@@ -2,6 +2,12 @@ export type Point = { x: number; y: number }
 export type RippleState = { cycle: number; center: Point }
 export const RIPPLE_PERIOD = 4400
 export const RIPPLE_EXPAND = 3000
+/** Broadcast canvas allocation is capped even at 8K or high pixel density. */
+export function broadcastCanvasSize(width:number,height:number,dpr:number) {
+  if(!Number.isFinite(width)||!Number.isFinite(height)||width<=0||height<=0)return {width:0,height:0,scale:1}
+  const scale=Math.min(Number.isFinite(dpr)&&dpr>0?dpr:1,1.25,Math.sqrt(1_600_000/(width*height)))
+  return {width:Math.floor(width*scale),height:Math.floor(height*scale),scale}
+}
 /** Static grid capped independently of viewport size or pixel density. */
 export function dotGrid(width: number, height: number, budget = 2200) {
   if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0 || budget < 1) return []

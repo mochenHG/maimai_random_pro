@@ -1,0 +1,31 @@
+/* Control styling from the earlier martin65536/liquid-glass-webgl visual study.
+   Shared surface optics and their fallback rules now live in glass-surfaces.css. */
+:root{--refresh-border:var(--line);--refresh-shadow:var(--lens-shadow);--refresh-field:var(--glass-control);--refresh-accent:var(--primary-fill);--refresh-text:var(--primary-ink)}
+.app-frame{background:transparent}
+.app-frame .main-nav{width:auto;max-width:100%;padding:5px;gap:4px;border-radius:99px;background:var(--refresh-field);box-shadow:inset 0 1px 1px var(--lens-rim),0 8px 24px var(--refresh-shadow)}
+.main-nav:before{display:none!important}
+.app-frame .main-nav button{min-width:0;white-space:nowrap;padding:11px 15px;border-radius:99px;transition:background .24s,box-shadow .24s,scale .3s cubic-bezier(.2,1.5,.4,1)}
+.app-frame .main-nav button.selected{background:var(--refresh-field)!important;box-shadow:inset 1px 1px 0 #ffffff8a,inset -1px -1px 0 #80808040,0 3px 12px var(--refresh-shadow)!important}
+.app-frame button:not(.stage-step):not(.difficulty-chip):not(.text-button):not(.disclosure-trigger):not(.main-nav button){border-radius:22px;background-color:var(--refresh-field);transition:scale .3s cubic-bezier(.2,1.5,.4,1),background-color .2s,box-shadow .2s}
+.app-frame button:not(:disabled):active{scale:.97}
+.app-frame button.primary{background-color:var(--refresh-accent)!important;color:var(--refresh-text)!important}
+:root:not([data-theme=dark]) .app-frame button.primary{color:#fff!important}
+.app-frame select{max-width:100%;padding:10px 14px;border:1px solid var(--refresh-border);border-radius:16px;background:var(--refresh-field);color:var(--ink);font:inherit}
+.app-frame select option{background:var(--bg);color:var(--ink)}
+.app-frame input:not([type=range]):not([type=checkbox]),.app-frame textarea,.app-frame .select-trigger{background-color:var(--refresh-field);border-radius:16px;color:var(--ink)}
+.app-frame input[type=checkbox]{appearance:none;flex:0 0 42px;width:42px;height:25px;border:1px solid var(--refresh-border);border-radius:99px;background:color-mix(in srgb,var(--ink) 22%,transparent);position:relative;vertical-align:middle;transition:background .2s}
+.app-frame input[type=checkbox]:before{content:"";position:absolute;width:19px;height:19px;top:2px;left:2px;background:#fff;border-radius:50%;box-shadow:0 2px 5px #0003;transition:transform .3s cubic-bezier(.2,1.5,.4,1)}
+.app-frame input[type=checkbox]:checked{background:var(--ink)}
+.app-frame input[type=checkbox]:checked:before{transform:translateX(17px)}
+.app-frame input:focus-visible,.app-frame select:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.scoring-panel,.director-panel,.network-control,.history-controls{margin:22px 0}
+.scoring-panel table{width:100%;border-collapse:collapse}.scoring-panel td,.scoring-panel th{padding:12px;text-align:left}.scoring-panel input[type=number]{width:150px}
+.score-entry{margin:12px 0}.score-entry strong{min-width:100px}.tiebreak-group,.tiebreak-record{padding:16px 0;border-top:1px solid var(--line)}
+.scene-buttons{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}.director-panel>label{display:flex;gap:14px;align-items:center;margin:20px 0}.director-panel input:not([type=checkbox]){max-width:420px}
+.pair-code{font-size:30px;letter-spacing:.18em}.network-control a{overflow-wrap:anywhere}.snapshot-row{justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
+details.panel>summary{font-weight:650;cursor:pointer}details.panel[open]>summary{margin-bottom:20px}.exclusion-list{display:grid;gap:10px;margin:14px 0}.history-controls>input{margin-top:15px;width:min(440px,100%)}
+.scores-hidden .obs-player-score,.scores-hidden .obs-rank{visibility:hidden}
+.brand-logo,.brand-logo-image,.stage-progress-strip{filter:none!important}.brand-logo-image{transition:opacity .2s!important;transform:none!important}
+@media(max-width:1000px){.topbar{flex-wrap:wrap;gap:12px}.main-nav{order:3;flex:1 1 100%;justify-content:center}.app-frame .main-nav button{flex:1;padding:10px 8px}.page-heading{gap:12px}.director-panel>label{flex-wrap:wrap}}
+@media(max-width:760px),(pointer:coarse),(prefers-reduced-transparency:reduce){.app-frame .main-nav button{font-size:12px;gap:4px}.main-nav button svg{display:none}.scoring-panel .section-title{flex-wrap:wrap}.scoring-panel td{padding:8px}.scoring-panel input[type=number]{width:120px}}
+@media(prefers-reduced-motion:reduce){.app-frame *, .app-frame *:before{scroll-behavior:auto!important;transition:none!important}}

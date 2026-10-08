@@ -1,7 +1,9 @@
+import { drawCharts } from './chartHistoryStore'
+import { useTournamentStore } from './tournamentStore'
 import { create } from 'zustand'
 import type { Pool, Song } from '../types'
 import { load, save } from '../lib/storage'
-import { normalizeSongs, sample } from '../lib/songs'
+import { normalizeSongs } from '../lib/songs'
 const POOLS_KEY = 'maimai-pro-pools'
 export const DRAW_KEY = 'maimai-pro-draw'
 function loadPools(): Pool[] {
@@ -34,13 +36,12 @@ export const useSongStore = create<SongState>((set, get) => ({
     set({ pools }); return true
   },
   draw: (candidates, count) => {
-    const history = new Set(get().history)
-    let available = candidates.filter(s => !history.has(s.id)); let reset = false
-    if (!available.length && candidates.length) { available = candidates; for (const song of candidates) history.delete(song.id); reset = true }
-    const selectedSongs = sample(available, count)
-    for (const song of selectedSongs) history.add(song.id)
-    save(DRAW_KEY, selectedSongs); set({ selectedSongs, history, drawKey: get().drawKey + 1 }); return { count: selectedSongs.length, reset }
+    const state=useTournamentStore.getState()
+    const selectedSongs=drawCharts(candidates,count,state.eventId??'legacy-event',state.currentStage)
+    save(DRAW_KEY,selectedSongs);set({selectedSongs,drawKey:get().drawKey+1});return {count:selectedSongs.length,reset:false}
   },
   select: song => { save(DRAW_KEY, [song]); set({ selectedSongs: [song], drawKey: get().drawKey + 1 }) },
   clear: () => { save(DRAW_KEY, []); set({ selectedSongs: [] }) },
 }))
+
+window.addEventListener('pro-remote',e=>{const key=(e as CustomEvent<string>).detail;if(key===DRAW_KEY)useSongStore.setState(s=>({selectedSongs:load<Song[]>(DRAW_KEY,[]),drawKey:s.drawKey+1}));if(key===POOLS_KEY)useSongStore.setState({pools:loadPools()})})

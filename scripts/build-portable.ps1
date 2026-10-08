@@ -9,10 +9,10 @@ $payloadRoot = Join-Path $stagingRoot 'payload'
 $releaseRoot = Join-Path $projectRoot 'release'
 New-Item -ItemType Directory -Path $payloadRoot,$releaseRoot -Force | Out-Null
 Copy-Item -LiteralPath $nodeBinary -Destination (Join-Path $payloadRoot 'node.exe')
-foreach($name in @('dist','data','licenses','server.mjs','sync.mjs','music.mjs','README.md','VERSION_NOTES.md','THIRD_PARTY_NOTICES.md')) {
+foreach($name in @('dist','data','licenses','server.mjs','sync.mjs','journal.mjs','pairing.mjs','music.mjs','README.md','VERSION_NOTES.md','CHANGELOG.md','RELEASE_NOTES.md','THIRD_PARTY_NOTICES.md')) {
   Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination $payloadRoot -Recurse
 }
-[IO.File]::WriteAllText((Join-Path $payloadRoot 'package.json'),'{"name":"maimai-random-pro","version":"2.5.0","type":"module"}')
+[IO.File]::WriteAllText((Join-Path $payloadRoot 'package.json'),'{"name":"maimai-random-pro","version":"3.6.0","type":"module"}')
 $wsPath = (& $nodeBinary --input-type=module -e "import {createRequire} from 'node:module';import path from 'node:path';console.log(path.dirname(createRequire(import.meta.url).resolve('ws/package.json')))" | Select-Object -Last 1)
 New-Item -ItemType Directory -Path (Join-Path $payloadRoot 'node_modules\ws') -Force | Out-Null
 foreach($name in @('package.json','index.js','wrapper.mjs','browser.js','lib','LICENSE')) {
@@ -40,8 +40,11 @@ $iconWriter.Write([byte]0); $iconWriter.Write([byte]0); $iconWriter.Write([byte]
 $iconWriter.Write([uint16]1); $iconWriter.Write([uint16]32); $iconWriter.Write([uint32]$png.Length); $iconWriter.Write([uint32]22); $iconWriter.Write($png.ToArray())
 $iconWriter.Dispose();$graphics.Dispose();$bitmap.Dispose();$png.Dispose();$pen.Dispose()
 $compiler = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
-$outputFile = Join-Path $releaseRoot 'maimai-random-pro-2.5.0-win-x64.exe'
+$outputFile = Join-Path $releaseRoot 'maimai-random-pro-3.6.0-win-x64.exe'
 & $compiler /nologo /target:winexe /platform:x64 /optimize+ /reference:System.Windows.Forms.dll /reference:System.Drawing.dll /reference:System.IO.Compression.dll /reference:System.IO.Compression.FileSystem.dll "/resource:$payloadZip,payload.zip" "/win32icon:$iconPath" "/out:$outputFile" (Join-Path $projectRoot 'desktop\PortableLauncher.cs') (Join-Path $projectRoot 'desktop\Palette.generated.cs')
 if($LASTEXITCODE -ne 0){throw 'Portable launcher compilation failed'}
 Write-Output $outputFile
-Write-Output ('SHA256 ' + (Get-FileHash -LiteralPath $outputFile -Algorithm SHA256).Hash)
+$hashAlgorithm = [Security.Cryptography.SHA256]::Create()
+$hashStream = [IO.File]::OpenRead($outputFile)
+try { Write-Output ('SHA256 ' + [BitConverter]::ToString($hashAlgorithm.ComputeHash($hashStream)).Replace('-','').ToLowerInvariant()) }
+finally { $hashStream.Dispose(); $hashAlgorithm.Dispose() }

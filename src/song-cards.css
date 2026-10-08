@@ -1,0 +1,69 @@
+/* Collectible chart cards: difficulty stripes, intact jacket, light title plate.
+   Card-local colors do not change the surrounding glass application theme. */
+.song-card.collectible-card{container-type:inline-size;min-width:0;max-width:420px;border:0;border-radius:22px;background:transparent;color:#fff;box-shadow:0 10px 30px #00000018;overflow:hidden;transition:transform .3s var(--control-ease),box-shadow .3s}
+.collectible-card .song-card-turn,.collectible-card .song-card-front{border-radius:inherit;background:transparent}
+.collectible-card .collectible-face{padding:5cqi;border-radius:inherit;background-color:var(--diff);background-image:repeating-linear-gradient(45deg,transparent 0 9px,#ffffff14 9px 18px);color:var(--diff-ink)}
+.collectible-card .cover.card-jacket{position:relative;display:grid;aspect-ratio:1.04;height:auto;min-height:0;margin:1.5cqi 2cqi 3.3cqi;border:clamp(4px,1.8cqi,8px) solid #fff;border-radius:5px;background:#111;color:#fff;overflow:hidden}
+.collectible-card .card-jacket img{display:block;width:100%;height:100%;object-fit:contain;filter:none}
+.collectible-card .card-jacket>span[role=img]{font-size:clamp(40px,20cqi,90px);opacity:.7}
+.collectible-card .card-chart-type{position:absolute;right:6px;top:6px;padding:3px 7px;border-radius:4px;background:#172039;color:#fff;font-size:clamp(9px,2.7cqi,12px);line-height:1.3;font-weight:800;letter-spacing:.05em}
+.collectible-card .card-details{display:grid;gap:3.5cqi;min-width:0}
+.collectible-card .card-grade-band{display:grid;grid-template-columns:24% minmax(0,1fr);gap:2.4cqi;min-height:15cqi}
+.collectible-card .card-level-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:9px;background:#18243d;color:#fff;padding:6px}
+.collectible-card .card-level-tile>span{font-size:clamp(8px,2.4cqi,11px);line-height:1.2;letter-spacing:.16em;font-weight:800;color:#c5c8d3}
+.collectible-card .card-level-tile>strong{font-size:clamp(22px,6.8cqi,31px);font-weight:850;letter-spacing:-.04em;line-height:1}
+.collectible-card .card-difficulty-label{display:grid;place-items:center;min-width:0;padding:6px 3px;border-radius:9px;background:var(--diff);background-image:repeating-linear-gradient(45deg,transparent 0 9px,#ffffff10 9px 18px);color:var(--diff-ink);font-size:clamp(17px,7cqi,32px);font-weight:850;line-height:1.1;letter-spacing:.01em}
+.collectible-card .card-name-block{display:flex;flex-direction:column;justify-content:center;min-width:0;min-height:32cqi;border-radius:11px;background:#fff;color:#18243d;padding:4cqi 4.4cqi}
+.collectible-card .card-name-block h3{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin:0;min-height:0;font-size:clamp(18px,6.2cqi,29px);font-weight:800;letter-spacing:-.025em;line-height:1.28;text-align:center;overflow-wrap:anywhere;color:#18243d}
+.collectible-card .card-author{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin:3.5cqi 0 0;padding-top:2.5cqi;border-top:2px solid var(--diff);font-size:clamp(11px,3.1cqi,14px);font-weight:700;letter-spacing:.08em;line-height:1.5;text-align:center;overflow-wrap:anywhere;color:#5d6274}
+.collectible-card .card-info-band{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:12.5cqi;padding:2.8cqi 3.8cqi;background:#18243d;color:#fff;border-radius:9px}
+.collectible-card .card-constant-value{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
+.collectible-card .card-constant-value>span{font-size:clamp(8px,2.3cqi,11px);font-weight:850;letter-spacing:.16em;color:#c5c8d3}
+.collectible-card .card-constant-value>strong{font-size:clamp(18px,4.9cqi,24px);font-weight:850;line-height:1;letter-spacing:-.04em;color:#fff;font-variant-numeric:tabular-nums}
+.collectible-card .card-genre{max-width:58%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:clamp(11px,3.1cqi,14px);font-weight:700;color:#c5c8d3}
+.collectible-card .card-credits{display:flex;justify-content:space-between;align-items:baseline;gap:8px;min-width:0;padding:2px 0;background:var(--diff);color:var(--diff-ink);font-size:clamp(9px,2.5cqi,12px);font-weight:750;line-height:1.4;letter-spacing:.035em}
+.collectible-card .card-designer{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;min-width:0;overflow-wrap:anywhere}
+.collectible-card .card-designer>span{white-space:nowrap}
+.collectible-card .card-bpm{white-space:nowrap;flex-shrink:0;font-variant-numeric:tabular-nums}
+/* Reserve two lines even when a value uses only one. Every full card of the same
+   width has the same row geometry, independently of text length or image loading.
+   The fixed tracks also line up the difficulty, divider, CONST and BPM positions. */
+.collectible-card:not(.is-compact){--card-title-font:clamp(18px,6.2cqi,29px);--card-author-font:clamp(11px,3.1cqi,14px);--card-credit-font:clamp(9px,2.5cqi,12px);--card-title-row:calc(var(--card-title-font)*2*1.28);--card-author-row:calc(var(--card-author-font)*2*1.5 + 2.5cqi + 2px);--card-name-row:calc(var(--card-title-row) + var(--card-author-row) + 11.5cqi);--card-credit-row:calc(var(--card-credit-font)*2*1.4 + 4px)}
+.collectible-card:not(.is-compact) .card-details{grid-template-rows:max(15cqi,48px) var(--card-name-row) max(12.5cqi,36px) var(--card-credit-row)}
+.collectible-card:not(.is-compact) .card-grade-band,.collectible-card:not(.is-compact) .card-info-band{height:100%;min-height:0;min-width:0}
+.collectible-card:not(.is-compact) .card-name-block{display:grid;grid-template-rows:var(--card-title-row) var(--card-author-row);gap:3.5cqi;height:100%;min-height:0;min-width:0;overflow:hidden;padding:4cqi 4.4cqi}
+.collectible-card .card-title-slot{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;overflow:hidden}
+.collectible-card:not(.is-compact) .card-name-block h3{font-size:var(--card-title-font);max-height:100%;flex:1;flex-shrink:0;line-height:1.28}
+.collectible-card .card-author-slot{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;overflow:hidden;border-top:2px solid var(--diff);padding-top:2.5cqi}
+.collectible-card:not(.is-compact) .card-author{flex:1;max-height:100%;margin:0;padding:0;border:0;font-size:var(--card-author-font);line-height:1.5}
+.collectible-card:not(.is-compact) .card-credits{height:100%;min-height:0;align-items:flex-start;overflow:hidden;font-size:var(--card-credit-font);line-height:1.4}
+.collectible-card:not(.is-compact) .card-designer{max-height:calc(var(--card-credit-font)*2*1.4)}
+.collectible-card:after{display:none}
+/* One/two cards per row keep all metadata readable in the control workspace. */
+.draw-content .cards{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:20px;padding:16px 0 28px}
+.draw-content .cards .collectible-card{flex:0 1 calc(50% - 10px);min-width:min(100%,280px);max-width:420px}
+.draw-content .cards .collectible-card:only-child{flex-basis:100%}
+.stage-song-cards .song-card.collectible-card{flex:0 0 260px;max-width:260px;display:block}
+/* Full OBS song scenes keep up to four cards in one row at broadcast widths. */
+.obs-body .obs-cards.cards{--card-count:1;display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:center;width:calc(100% - 64px);max-width:1800px;gap:20px;margin:32px auto;padding:0}
+.obs-body .obs-cards[data-card-count="2"]{--card-count:2}
+.obs-body .obs-cards[data-card-count="3"]{--card-count:3}
+.obs-body .obs-cards[data-card-count="4"]{--card-count:4}
+.obs-body .obs-cards .song-card.collectible-card{flex:0 1 calc((100% - (var(--card-count) - 1)*20px)/var(--card-count));max-width:min(420px,calc((100svh - 64px)*.54));transform:none;animation:none}
+/* Compact cards preserve the ranking footer's original 98px height budget. */
+.obs-ranking-songs .song-card.collectible-card.is-compact{flex:0 0 285px;max-width:285px;display:block;min-height:98px;border-radius:12px;box-shadow:none;transform:none;animation:none}
+.collectible-card.is-compact .collectible-face{display:grid;grid-template-columns:82px minmax(0,1fr);gap:8px;padding:8px}
+.collectible-card.is-compact .cover.card-jacket{width:82px;height:82px;min-height:0;aspect-ratio:1;margin:0;border-width:3px;border-radius:4px}
+.collectible-card.is-compact .card-chart-type{top:3px;right:3px;font-size:8px;padding:2px 3px}
+.collectible-card.is-compact .card-details{gap:5px;align-content:center}
+.collectible-card.is-compact .card-grade-band{grid-template-columns:42px minmax(0,1fr);gap:5px;min-height:29px}
+.collectible-card.is-compact .card-level-tile{padding:3px;border-radius:4px}
+.collectible-card.is-compact .card-level-tile>span{display:none}
+.collectible-card.is-compact .card-level-tile>strong{font-size:17px}
+.collectible-card.is-compact .card-difficulty-label{padding:4px 2px;font-size:14px;border-radius:4px;letter-spacing:0}
+.collectible-card.is-compact .card-name-block{min-height:37px;padding:7px 8px;border-radius:5px}
+.collectible-card.is-compact .card-name-block h3{display:block;white-space:nowrap;text-overflow:ellipsis;font-size:15px;line-height:1.3;text-align:left}
+@media(hover:hover){.app-frame .collectible-card:hover{transform:translateY(-5px);box-shadow:0 16px 32px #00000026}.draw-content .cards:has(.collectible-card:hover) .collectible-card:not(:hover){transform:none}}
+@media(max-width:600px){.draw-content .cards{gap:20px}.draw-content .cards .collectible-card{flex-basis:100%;max-width:380px}.stage-song-cards .song-card.collectible-card{flex-basis:235px;max-width:235px}}
+@media(max-width:800px){.obs-body .obs-cards.cards{width:calc(100% - 24px);gap:12px;margin:12px auto}.obs-body .obs-cards .song-card.collectible-card{flex-basis:calc(50% - 6px);max-width:360px}.obs-body .obs-cards .song-card.collectible-card:only-child{flex-basis:100%}}
+@media(prefers-reduced-motion:reduce){.song-card.collectible-card{transition:none;animation:none}.app-frame .collectible-card:hover{transform:none;box-shadow:0 10px 30px #00000018}}

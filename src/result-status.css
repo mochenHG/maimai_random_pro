@@ -1,0 +1,53 @@
+/* Explicit user-requested semantic exception to the monochrome glass theme. */
+:root{--result-pass-ink:#126237;--result-pass-fill:#e8f5ec;--result-pass-rim:#328b57;--result-fail-ink:#9c252c;--result-fail-fill:#fcebed;--result-fail-rim:#c2414b}
+:root[data-theme=dark]{--result-pass-ink:#a0f3ba;--result-pass-fill:#143724;--result-pass-rim:#60c882;--result-fail-ink:#ffadb1;--result-fail-fill:#422027;--result-fail-rim:#ed7782}
+.rank-status{display:inline-flex;align-items:center;gap:7px;min-height:31px;padding:5px 10px;border:1px solid var(--line);border-radius:30px;background:var(--lens-field);color:var(--ink);font-size:13px;font-weight:650;line-height:1.4;white-space:nowrap}
+.rank-status:is(.is-advanced,.is-in-range){background:var(--result-pass-fill);color:var(--result-pass-ink);border-color:var(--result-pass-rim)}
+.rank-status:is(.is-eliminated,.is-repechage,.is-out-of-range){background:var(--result-fail-fill);color:var(--result-fail-ink);border-color:var(--result-fail-rim)}
+.rank-status:is(.is-in-range,.is-out-of-range){border-style:dashed}
+.rank-status.is-tie{border:2px solid var(--ink)}
+.roster-ranking-note{margin:10px 0 20px;font-size:14px;line-height:1.7;color:var(--muted)}
+.roster-live-table.players-table{min-width:960px;width:100%;border-collapse:separate;border-spacing:0;table-layout:auto;overflow-anchor:none}
+.roster-live-table.players-table th:first-child,.roster-live-table.players-table td:first-child{width:70px;padding-left:16px}
+.roster-live-table tr>td:first-child{border-left:4px solid transparent}
+.roster-live-table tr:is([data-status=advanced],[data-status=in-range])>td:first-child{border-left-color:var(--result-pass-rim)}
+.roster-live-table tr:is([data-status=eliminated],[data-status=repechage],[data-status=out-of-range])>td:first-child{border-left-color:var(--result-fail-rim)}
+.roster-live-table tr[data-status=tie]>td:first-child{border-left-color:var(--ink)}
+.roster-live-table td:nth-child(2){min-width:150px;max-width:220px}
+.roster-live-table td>strong{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;font-weight:650}
+.roster-live-table .numeric-cell{width:100px;max-width:100px}
+.roster-live-table .obs-score{font-size:16px;line-height:1.4;letter-spacing:-.025em}
+.roster-live-table .roster-rank{font-size:18px;font-weight:750}
+.roster-live-table .roster-score,.roster-live-table td:nth-last-child(3){white-space:nowrap}
+.roster-live-table .select-trigger{min-width:125px}
+/* Large colored badges plus matching edges remain distinct over any OBS scene. */
+.obs-body .obs-player-advanced{border-color:var(--result-pass-rim);box-shadow:inset 4px 0 0 var(--result-pass-rim),inset 0 1px 1px var(--lens-rim)}
+.obs-body .obs-player:is(.obs-player-eliminated,.obs-player-repechage){border-color:var(--result-fail-rim);box-shadow:inset 4px 0 0 var(--result-fail-rim),inset 0 1px 1px var(--lens-rim)}
+.obs-body .obs-result-advanced{background:var(--result-pass-fill);color:var(--result-pass-ink);border-color:var(--result-pass-rim)}
+.obs-body .obs-result:is(.obs-result-eliminated,.obs-result-repechage){background:var(--result-fail-fill);color:var(--result-fail-ink);border-color:var(--result-fail-rim)}
+.obs-result-banner{position:relative;display:flex;align-items:center;gap:16px;min-height:56px;margin:-4px 0 20px;overflow:hidden;animation:obs-confirm-enter .75s cubic-bezier(.16,1,.3,1) both}
+.obs-result-banner>div{display:grid;gap:5px;min-width:0}
+.obs-result-banner strong{font-size:21px;font-weight:750;letter-spacing:-.02em;line-height:1.2}
+.obs-result-banner div>span{font-size:14px;color:var(--muted);line-height:1.4}
+.obs-reveal-seal{position:relative;display:grid;place-items:center;flex:0 0 54px;height:54px;border-radius:50%;border:1px solid var(--line);background:var(--obs-inset);color:var(--ink);animation:obs-seal-arrive .85s cubic-bezier(.2,1.25,.3,1) both}
+.obs-reveal-seal>i{position:absolute;inset:3px;border:1px solid var(--line);border-radius:inherit;animation:obs-seal-ring 1s .25s ease-out 2 both}
+.obs-reveal-word{margin-left:auto;font-size:clamp(20px,2.8vw,38px);font-weight:800;font-style:italic;letter-spacing:-.055em;color:var(--muted);animation:obs-confirm-enter .8s .18s cubic-bezier(.16,1,.3,1) backwards}
+.obs-reveal-word>span{color:#f4d900}
+.obs-body .is-announced .obs-player :is(.obs-rank,.obs-player-identity,.obs-player-score){animation:obs-qualified-row .7s var(--reveal-delay) cubic-bezier(.16,1,.3,1) backwards}
+.obs-body .is-announced .obs-result:not(.obs-result-live){animation:obs-result-stamp .75s calc(var(--reveal-delay) + 120ms) cubic-bezier(.2,1.25,.3,1) backwards}
+.obs-body .is-announced .obs-player:after{background:linear-gradient(105deg,transparent 20%,#ffffff24 50%,transparent 80%);animation:obs-result-sweep 1.1s calc(var(--reveal-delay) + 180ms) ease-out both}
+/* The old generation stays mounted until this bounded exit finishes. */
+.obs-body .obs-song-scene .obs-cards.is-leaving .song-card.collectible-card{animation:obs-card-exit .32s var(--card-exit-delay,0ms) cubic-bezier(.5,0,.8,.4) both;pointer-events:none}
+.obs-cards.is-leaving .song-card:nth-child(2){--card-exit-delay:50ms}
+.obs-cards.is-leaving .song-card:nth-child(3){--card-exit-delay:100ms}
+.obs-cards.is-leaving .song-card:nth-child(n+4){--card-exit-delay:150ms}
+@keyframes obs-card-exit{to{opacity:0;transform:translateY(28px) scale(.94) rotate(3deg)}}
+@keyframes obs-confirm-enter{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:none}}
+@keyframes obs-qualified-row{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+@keyframes obs-seal-arrive{from{opacity:0;transform:scale(.55) rotate(-25deg)}to{opacity:1;transform:none}}
+@keyframes obs-seal-ring{from{opacity:.65;transform:scale(.9)}to{opacity:0;transform:scale(1.25)}}
+@media(max-width:800px){.obs-result-banner{gap:12px}.obs-reveal-word{font-size:22px}.obs-result-banner strong{font-size:18px}}
+@media(max-width:480px){.obs-reveal-word{display:none}}
+.obs-motion-paused .obs-result-banner *,.obs-motion-paused .obs-result-banner,.obs-motion-paused .is-announced .obs-player *,.obs-motion-paused .obs-cards.is-leaving .collectible-card{animation-play-state:paused!important}
+.obs-reduced-motion .obs-result-banner *,.obs-reduced-motion .obs-result-banner,.obs-reduced-motion .is-announced .obs-player *,.obs-reduced-motion .obs-cards.is-leaving .collectible-card{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){.obs-result-banner,.obs-result-banner *,.obs-body .is-announced .obs-player *,.obs-body .is-announced .obs-player:after,.obs-body .obs-cards.is-leaving .song-card.collectible-card{animation:none!important;transition:none!important}}

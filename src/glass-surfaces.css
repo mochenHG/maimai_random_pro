@@ -1,0 +1,43 @@
+/* One optical layer per surface. Foreground text is never passed through a filter.
+   This local implementation keeps the existing DOM controls and bounded SVG lenses. */
+:root{--glass-blur:3px}
+.app-frame .panel,.app-frame .empty{position:relative}
+.app-frame .panel,.app-frame .empty,.topbar,.stage-progress-nav,.stage-dialog,.select-popover,.obs-popover{
+  isolation:isolate;background:var(--glass-plate);border:1px solid color-mix(in srgb,var(--glass-rim-top) 60%,transparent);
+  box-shadow:inset 0 1px 0 var(--glass-rim-top),inset 0 -1px 0 var(--glass-rim-low),0 16px 36px var(--glass-drop);
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
+.stage-dialog,.select-popover,.obs-popover{background-color:var(--glass-menu-plate)}
+.app-frame .panel:before,.app-frame .empty:before,.topbar:before,.stage-progress-nav:before,.stage-dialog:before,.select-popover:before,.obs-popover:before{
+  content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;
+  background:linear-gradient(155deg,var(--glass-wash),transparent 24%,transparent 78%,var(--glass-luster));
+  backdrop-filter:blur(var(--glass-blur)) saturate(1)!important;-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(1)!important;
+}
+@supports(backdrop-filter:url(#glass)){
+  .app-frame [data-glass-optics]:before,.stage-dialog[data-glass-optics]:before,.select-popover[data-glass-optics]:before,.obs-popover[data-glass-optics]:before{
+    backdrop-filter:var(--refraction) blur(1.5px) saturate(1)!important;-webkit-backdrop-filter:var(--refraction) blur(1.5px) saturate(1)!important;
+  }
+}
+/* The rim uses only a static mask, preserving the clear center and readable labels. */
+@supports(mask-composite:exclude){
+  .app-frame .panel:after,.topbar:after,.stage-progress-nav:after{
+    content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;z-index:0;pointer-events:none;
+    background:linear-gradient(135deg,var(--glass-rim-top),transparent 28%,transparent 67%,#ffffff38);
+    mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;
+  }
+}
+.topbar .header-prism{background:transparent;box-shadow:none}
+.glass-filter-defs{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+.brand-logo-image,.stage-progress-strip{filter:none!important;backface-visibility:hidden}
+.glass-lite .panel:before,.glass-lite .empty:before,.glass-lite .topbar:before,.glass-lite .stage-progress-nav:before{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+@media(max-width:760px),(pointer:coarse){
+  .app-frame .panel,.app-frame .empty,.topbar,.stage-progress-nav{background-color:color-mix(in srgb,var(--bg) 94%,transparent)}
+  .app-frame .panel:before,.app-frame .empty:before,.topbar:before,.stage-progress-nav:before,.stage-dialog:before,.select-popover:before,.obs-popover:before{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}
+@media(prefers-reduced-transparency:reduce){
+  .app-frame .panel,.app-frame .empty,.topbar,.stage-progress-nav,.stage-dialog,.select-popover,.obs-popover{background:var(--glass-solid)!important}
+  .app-frame .panel:before,.app-frame .empty:before,.topbar:before,.stage-progress-nav:before,.stage-dialog:before,.select-popover:before,.obs-popover:before{background:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}
+@supports not(backdrop-filter:blur(1px)){
+  .app-frame .panel,.app-frame .empty,.topbar,.stage-progress-nav,.stage-dialog,.select-popover,.obs-popover{background:var(--glass-solid)!important}
+}

@@ -1,0 +1,7 @@
+/* Generated from design/difficulty-colors.json. */
+.difficulty-BASIC,.song-difficulty-BASIC{--diff:#68c645;--diff-ink:#103006}
+.difficulty-ADVANCED,.song-difficulty-ADVANCED{--diff:#edbd23;--diff-ink:#302700}
+.difficulty-EXPERT,.song-difficulty-EXPERT{--diff:#c9294d;--diff-ink:#ffffff}
+.difficulty-MASTER,.song-difficulty-MASTER{--diff:#8450bc;--diff-ink:#ffffff}
+.difficulty-ReMASTER,.song-difficulty-ReMASTER{--diff:#dec2fa;--diff-ink:#472562}
+.difficulty-UTAGE,.song-difficulty-UTAGE{--diff:#ea88b9;--diff-ink:#4e1633}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Moon, Sun } from 'lucide-react'
+import MorphIcon from './MorphIcon'
 function preferred() {try {const value=localStorage.getItem('maimai-pro-theme'); if(value==='light'||value==='dark')return value} catch { /* Use system preference. */ } return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
 export function initializeTheme() {document.documentElement.dataset.theme=preferred()}
 export default function ThemeToggle() {
@@ -13,5 +13,5 @@ export default function ThemeToggle() {
     if(document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(apply)
     else apply()
   }
-  return <button className="theme-toggle" aria-label={theme==='dark'?'切换浅色模式':'切换深色模式'} title={theme==='dark'?'切换浅色模式':'切换深色模式'} onClick={toggle}><span key={theme}>{theme==='dark'?<Sun size={18}/>:<Moon size={18}/>}</span></button>
+  return <button className="theme-toggle" aria-label={theme==='dark'?'切换浅色模式':'切换深色模式'} title={theme==='dark'?'切换浅色模式':'切换深色模式'} onClick={toggle}><span><MorphIcon name={theme==='dark'?'sun':'moon'}/></span></button>
 }

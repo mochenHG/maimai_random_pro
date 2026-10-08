@@ -1,0 +1,8 @@
+/* Difficulty color conveys chart identity, never tournament outcome. Opaque fills
+   keep each selected label readable above either theme and the moving light. */
+.app-frame .difficulty-chip{opacity:1;background-image:none;color:var(--ink);border:1px solid var(--diff);background-color:var(--lens-field);box-shadow:inset 0 0 0 1px var(--diff),0 3px 10px var(--glass-drop)}
+.app-frame .difficulty-chip.selected{color:var(--diff-ink);background:var(--diff);border-color:var(--diff);box-shadow:inset 0 1px 0 #ffffff55,inset 0 -1px 0 #00000018,0 3px 10px var(--glass-drop)}
+:root .app-frame .difficulty-chip:not(.selected){color:var(--ink);background:var(--lens-field);opacity:1}
+.difficulty-chip:before,.difficulty-chip:after{display:none}
+.difficulty-dot{background:var(--diff);color:var(--diff);box-shadow:0 0 0 1px #80808024}
+.song-card .difficulty,.obs-body .difficulty{background:var(--diff);color:var(--diff-ink);padding:4px 9px;border:1px solid var(--diff);border-radius:9px}

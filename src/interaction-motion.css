@@ -1,0 +1,38 @@
+/* Local state transitions inspired by Morphicons and Rare UI. No blur animation
+   on glass surfaces, no imported engine, and no new continuously running effect. */
+:root{--control-duration:320ms;--control-ease:cubic-bezier(.2,.8,.2,1);--control-spring:cubic-bezier(.22,1.18,.36,1)}
+.app-frame .morph-nav{position:relative;isolation:isolate}
+.morph-nav .nav-active-pill{position:absolute;left:0;top:0;z-index:0;pointer-events:none;border-radius:99px;background:var(--refresh-field);border:1px solid var(--line);box-shadow:inset 1px 1px 0 var(--lens-rim),inset -1px -1px 0 var(--lens-bottom),0 3px 12px var(--refresh-shadow);transition:transform 420ms var(--control-spring),width 420ms var(--control-spring),height 240ms var(--control-ease)}
+.app-frame .morph-nav button{position:relative;z-index:1;transition:color 200ms,scale 280ms var(--control-spring)}
+.app-frame .morph-nav.has-pill button.selected{background:transparent!important;box-shadow:none!important}
+.app-frame .morph-nav button:hover{background:transparent;scale:1}
+.morph-nav button:is(:hover,:focus-visible) svg{animation:nav-icon-nudge 420ms var(--control-spring)}
+.morph-nav button[data-nav-icon=raffle]:is(:hover,:focus-visible) svg{animation:nav-icon-gift 480ms var(--control-spring)}
+.morph-nav button[data-nav-icon=director]:is(:hover,:focus-visible) svg{animation:nav-icon-broadcast 480ms var(--control-ease)}
+.app-frame .morph-nav button:active{scale:.96}
+.morph-icon{flex-shrink:0;overflow:visible;vertical-align:middle}
+.theme-toggle>span{display:flex;animation:none!important}
+.app-frame .animated-disclosure .disclosure-trigger>.morph-icon,.select-trigger>.morph-icon{transform:none!important;rotate:none;transition:none}
+.animated-disclosure .disclosure-body{filter:none;transition:opacity var(--control-duration) var(--control-ease),transform var(--control-duration) var(--control-ease)}
+.animated-disclosure.is-open .disclosure-body{filter:none}
+.disclosure-grid{transition:grid-template-rows 360ms var(--control-ease)}
+.select-popover{animation:control-menu-arrive 220ms var(--control-ease) both;transform-origin:var(--menu-origin,center top)}
+.obs-popover{animation:control-menu-arrive 220ms var(--control-ease) both;transform-origin:right top}
+.select-options>button{animation:control-option-arrive 240ms var(--control-ease) both}
+.tournament-stage-content{animation:control-content-arrive 280ms var(--control-ease) both}
+.stage-dialog[open]{animation:control-menu-arrive 240ms var(--control-ease) both;transform-origin:center}
+.copy-button{font-variant-numeric:tabular-nums;min-height:40px}
+.copy-button>span{min-width:3em;text-align:center}
+.app-frame .difficulty-chip{transition:background-color 180ms,color 180ms,scale 280ms var(--control-spring),box-shadow 180ms}
+.app-frame .difficulty-chip:active{scale:.96}
+@keyframes nav-icon-nudge{0%,100%{transform:translateY(0) rotate(0)}40%{transform:translateY(-2px) rotate(-7deg)}70%{transform:translateY(1px) rotate(3deg)}}
+@keyframes nav-icon-gift{0%,100%{transform:rotate(0)}35%{transform:rotate(-11deg)}65%{transform:rotate(8deg)}}
+@keyframes nav-icon-broadcast{0%,100%{transform:scale(1)}45%{transform:scale(1.14)}}
+@keyframes control-menu-arrive{from{opacity:0;transform:translateY(4px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes control-option-arrive{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+@keyframes control-content-arrive{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){
+  .morph-nav .nav-active-pill,.app-frame .morph-nav button,.animated-disclosure .disclosure-body,.disclosure-grid,.app-frame .difficulty-chip{transition:none!important}
+  .morph-nav button svg,.select-popover,.obs-popover,.select-options>button,.tournament-stage-content,.stage-dialog[open]{animation:none!important}
+  .app-frame .morph-nav button:active,.app-frame .difficulty-chip:active{scale:1}
+}

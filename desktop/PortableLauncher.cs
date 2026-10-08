@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 [assembly: AssemblyTitle("maimai Random Pro")]
 [assembly: AssemblyDescription("maimai Random Pro portable browser launcher")]
-[assembly: AssemblyVersion("2.5.0.0")]
-[assembly: AssemblyFileVersion("2.5.0.0")]
+[assembly: AssemblyVersion("3.6.0.0")]
+[assembly: AssemblyFileVersion("3.6.0.0")]
 static class PortableLauncher {
   static Process owned;
   static string address;
@@ -26,7 +26,7 @@ static class PortableLauncher {
     string preview=Argument(args,"--render-preview=");
     string report=Argument(args,"--report=");
     try {
-      if(!test && preview==null) {bool created;instance=new Mutex(true,"Local\\MaimaiRandomProPortable-2.5.0",out created);if(!created){Process.Start(new ProcessStartInfo(ReadSavedAddress()){UseShellExecute=true});return 0;}}
+      if(!test && preview==null) {bool created;instance=new Mutex(true,"Local\\MaimaiRandomProPortable-3.6.0",out created);if(!created){Process.Start(new ProcessStartInfo(ReadSavedAddress()){UseShellExecute=true});return 0;}}
       string cache=Argument(args,"--cache-dir=") ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"maimai-random-pro");
       string root=Extract(cache);
       if(preview!=null) {
@@ -40,7 +40,8 @@ static class PortableLauncher {
         return 0;
       }
       int requested; if(!Int32.TryParse(Argument(args,"--port="),out requested)) requested=5174;
-      int port=Start(root,requested,test);
+      string stateFile=Path.Combine(Path.GetFullPath(cache),"state","session.json");
+      int port=Start(root,requested,test,stateFile);
       address="http://127.0.0.1:"+port;
       if(test) {
         string health=Read(address+"/api/health");string page=Read(address+"/");
@@ -48,11 +49,13 @@ static class PortableLauncher {
         foreach(string logo in new[]{"01-crossroads","02-orbit","03-draw-cards"}) foreach(string suffix in new[]{"","-dark"}) assets &= File.Exists(Path.Combine(root,"dist","logo-concepts",logo+suffix+".png"));
         assets &= Directory.GetFiles(Path.Combine(root,"dist","assets"),"roster.worker-*.js").Length>0;
         assets &= File.Exists(Path.Combine(root,"node_modules","ws","index.js"));
-        bool ok=health.Contains("2.5.0") && page.Contains("v2.5") && assets && File.Exists(Path.Combine(root,"data","music-snapshot.json"));
-        if(report!=null)File.WriteAllText(report,"{\"ok\":"+ok.ToString().ToLowerInvariant()+",\"port\":"+port+",\"version\":\"2.5.0\",\"runtimeBundled\":true,\"defaultBrowserInterface\":true}",Encoding.UTF8);
+        foreach(string module in new[]{"pairing.mjs","journal.mjs","sync.mjs","music.mjs"}) assets &= File.Exists(Path.Combine(root,module));
+        foreach(string route in new[]{"/director","/tournament","/raffle","/obs-live?clean=1","/obs?clean=1","/obs-tournament?clean=1","/obs-raffle?clean=1"}) assets &= Read(address+route).Contains("v3.6");
+        bool ok=health.Contains("3.6.0") && page.Contains("v3.6") && assets && File.Exists(Path.Combine(root,"data","music-snapshot.json"));
+        if(report!=null)File.WriteAllText(report,"{\"ok\":"+ok.ToString().ToLowerInvariant()+",\"port\":"+port+",\"version\":\"3.6.0\",\"runtimeBundled\":true,\"defaultBrowserInterface\":true}",Encoding.UTF8);
         Stop();return ok?0:1;
       }
-      Directory.CreateDirectory(cache);File.WriteAllText(Path.Combine(cache,"last-address-2.5.0.txt"),address);
+      Directory.CreateDirectory(cache);File.WriteAllText(Path.Combine(cache,"last-address-3.6.0.txt"),address);
       Application.EnableVisualStyles();Application.SetCompatibleTextRenderingDefault(false);
       var form=new LauncherWindow(address,root);
       form.Icon=Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
@@ -64,11 +67,11 @@ static class PortableLauncher {
       return 1;
     } finally {if(instance!=null)instance.Dispose();}
   }
-  static string ReadSavedAddress() {try{return File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"maimai-random-pro","last-address-2.5.0.txt"));}catch{return "http://127.0.0.1:5174";}}
+  static string ReadSavedAddress() {try{return File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"maimai-random-pro","last-address-3.6.0.txt"));}catch{return "http://127.0.0.1:5174";}}
   static string Extract(string cache) {
     byte[] bytes; using(var stream=Assembly.GetExecutingAssembly().GetManifestResourceStream("payload.zip"))using(var data=new MemoryStream()){stream.CopyTo(data);bytes=data.ToArray();}
     string hash;using(var sha=SHA256.Create()){hash=BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-","").Substring(0,16);}
-    string root=Path.GetFullPath(Path.Combine(cache,"runtime-2.5.0-"+hash));string marker=Path.Combine(root,".ready");
+    string root=Path.GetFullPath(Path.Combine(cache,"runtime-3.6.0-"+hash));string marker=Path.Combine(root,".ready");
     if(File.Exists(marker) && File.Exists(Path.Combine(root,"node.exe")))return root;
     Directory.CreateDirectory(root);
     using(var zip=new ZipArchive(new MemoryStream(bytes),ZipArchiveMode.Read))foreach(var entry in zip.Entries) {
@@ -80,12 +83,14 @@ static class PortableLauncher {
     File.WriteAllText(marker,hash);return root;
   }
   static string Read(string url) {var request=(HttpWebRequest)WebRequest.Create(url);request.Timeout=1500;request.Proxy=null;using(var response=request.GetResponse())using(var reader=new StreamReader(response.GetResponseStream(),Encoding.UTF8))return reader.ReadToEnd();}
-  static bool Ready(int port) {try{return Read("http://127.0.0.1:"+port+"/api/health").Contains("\"version\":\"2.5.0\"");}catch{return false;}}
-  static int Start(string root,int requested,bool test) {
+  static bool Ready(int port) {try{return Read("http://127.0.0.1:"+port+"/api/health").Contains("\"version\":\"3.6.0\"");}catch{return false;}}
+  static int Start(string root,int requested,bool test,string stateFile) {
     if(!test && Ready(requested))return requested;
     for(int port=requested;port<requested+20;port++) {
       if(Ready(port))continue;
-      var info=new ProcessStartInfo(Path.Combine(root,"node.exe"),"server.mjs --port="+port){WorkingDirectory=root,UseShellExecute=false,CreateNoWindow=true,RedirectStandardError=true,RedirectStandardOutput=true};
+      var info=new ProcessStartInfo(Path.Combine(root,"node.exe"),"server.mjs --lan --port="+port){WorkingDirectory=root,UseShellExecute=false,CreateNoWindow=true,RedirectStandardError=true,RedirectStandardOutput=true};
+      // Keep saved tournaments and logs outside the hashed runtime extraction.
+      info.EnvironmentVariables["MAIMAI_STATE_FILE"]=stateFile;
       owned=Process.Start(info);var errors=new StringBuilder();
       owned.OutputDataReceived+=(s,e)=>{};owned.ErrorDataReceived+=(s,e)=>{if(e.Data!=null)errors.AppendLine(e.Data);};owned.BeginOutputReadLine();owned.BeginErrorReadLine();
       for(int wait=0;wait<35;wait++){if(owned.HasExited)break;if(Ready(port))return port;Thread.Sleep(100);}
@@ -112,7 +117,7 @@ sealed class LauncherWindow : Form {
     open=new RoundedAction{Text="打开页面",Bounds=new Rectangle(24,372,326,56),Primary=true};
     obs=new RoundedAction{Text="复制 OBS 地址",Bounds=new Rectangle(370,372,326,56)};
     open.Click+=(sender,e)=>Process.Start(new ProcessStartInfo(url){UseShellExecute=true});
-    obs.Click+=(sender,e)=>{Clipboard.SetText(url+"/obs?clean=1");obs.Text="已复制";};
+    obs.Click+=(sender,e)=>{Clipboard.SetText(url+"/obs-live?clean=1");obs.Text="已复制";};
     Controls.AddRange(new Control[]{open,obs});ApplyPalette();
   }
   static Image LoadLogo(string root,string name){using(var file=Image.FromFile(Path.Combine(root,"dist","logo-concepts",name)))return new Bitmap(file);}

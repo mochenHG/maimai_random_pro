@@ -1,7 +1,10 @@
 export function load<T>(key: string, fallback: T): T {
   try { const raw = localStorage.getItem(key); return raw ? (JSON.parse(raw) as T | null) ?? fallback : fallback } catch { return fallback }
 }
+let receiving=false
+export function applyRemote(key:string,data:unknown) {receiving=true;try{localStorage.setItem(key,JSON.stringify(data));window.dispatchEvent(new CustomEvent('pro-remote',{detail:key}))}finally{receiving=false}}
 export function save(key: string, data: unknown) {
+  if(receiving)return true
   try { localStorage.setItem(key, JSON.stringify(data)); window.dispatchEvent(new CustomEvent('pro-data-write', { detail:key })); return true }
   catch { window.dispatchEvent(new CustomEvent('storage-failure')); return false }
 }
